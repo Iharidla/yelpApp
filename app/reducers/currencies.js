@@ -6,7 +6,18 @@ const initialState = {
   amount: 100,
   conversions: {},
   error: null,
+  categories: [
+    {value: 'food', text: 'Food'},
+    {value: 'coffee', text: 'Coffee & Tea'},
+    {value: 'nightlife', text: 'Nightlife'},
+    {value: 'hotelstravel', text: 'Hotels & Travel'},
+    {value: 'shopping', text: 'Shopping'},
+    {value: 'restaurants', text: 'Restaurants'}
+  ],
 };
+
+
+
 
 // const initialState = {
 //   baseCurrency: 'USD',
