@@ -1,0 +1,40 @@
+{
+  "name": "firstApp",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "test": "jest",
+    "react-devtools": "react-devtools"
+  },
+  "dependencies": {
+    "braces": "^2.3.2",
+    "color": "3.0.0",
+    "hoist-non-react-statics": "^3.3.0",
+    "is-builtin-module": "^3.0.0",
+    "metro-react-native-babel-preset": "^0.52.0",
+    "moment": "^2.24.0",
+    "oauthsimple": "0.0.1",
+    "react": "16.6.3",
+    "react-native": "^0.58.5",
+    "react-native-dropdownalert": "^3.9.2",
+    "react-native-extended-stylesheet": "0.8.0",
+    "react-native-ionicons": "^4.5.5",
+    "react-navigation": "^3.3.2",
+    "react-redux": "^6.0.1",
+    "redux": "^4.0.1",
+    "redux-logger": "^3.0.6",
+    "redux-saga": "^1.0.2"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-flow": "^6.23.0",
+    "flow-bin": "^0.93.0",
+    "jest": "24.1.0",
+    "react-devtools": "^3.6.0",
+    "react-test-renderer": "16.6.3"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}
