@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { StatusBar, KeyboardAvoidingView, Text, FlatList, View, StyleSheet } from 'react-native';
+import { StatusBar, KeyboardAvoidingView, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 
 import { Container } from '../components/Container';
@@ -9,7 +9,6 @@ import { connectAlert } from '../components/Alert';
 
 import {getInitialConversion} from '../actions/currencies';
 import YelpSearchBar from "../components/SearchBar/YelpSearchBar";
-import Logo from "../components/Logo/Logo";
 import CategoryItem from "../components/CategoryItem/CategoryItem";
 import {Separator} from "../components/List";
 
@@ -66,16 +65,17 @@ class Home extends Component {
         {/*remove keyboardAvoidingView after updating search bar*/}
         <KeyboardAvoidingView behavior="height">
           {/*<Logo tintColor={this.props.primaryColor}/>*/}
-          <YelpSearchBar updateSearch={this.updateSearch} search={this.state.text}/>
-          <FlatList
-            data={ this.props.categories }
-            renderItem={ ({item, index}) =>
-              <CategoryItem item={item} index={index} onPress={this.categorySearch(item.text, item.value)} />
-            }
-            numColumns={3}
-            ItemSeparatorComponent={Separator}
-          />
-          
+            <YelpSearchBar
+              updateSearch={this.updateSearch}
+              search={this.state.text}/>
+            <FlatList
+              data={ this.props.categories }
+              renderItem={ ({item, index}) =>
+                <CategoryItem item={item} index={index} onPress={() => this.categorySearch(item.text, item.value)} />
+              }
+              numColumns={3}
+              ItemSeparatorComponent={Separator}
+            />
         </KeyboardAvoidingView>
       </Container>
     );

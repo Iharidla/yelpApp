@@ -1,6 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { SearchBar } from 'react-native-elements';
+import {Dimensions} from "react-native";
+
+const width = Dimensions.get('window').width;
 
 const YelpSearchBar = ({ search = '', updateSearch }) => (
   <SearchBar
@@ -11,7 +14,7 @@ const YelpSearchBar = ({ search = '', updateSearch }) => (
     value={search}
     lightTheme
     inputStyle={{color: 'black'}}
-    containerStyle={{width: 300}}
+    containerStyle={{width: width}}
   />
 );
 
