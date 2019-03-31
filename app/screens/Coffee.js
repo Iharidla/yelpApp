@@ -4,6 +4,7 @@ import { View, Text, TouchableOpacity, FlatList } from 'react-native';
 import { connect } from "react-redux";
 import Business from "../components/businesses/Business";
 import {Separator} from "../components/List";
+import {SearchMenu} from "../components/SearchMenu";
 
 class Coffee extends Component {
   static propTypes = {
@@ -28,19 +29,19 @@ class Coffee extends Component {
     );
   }
 
-  fetchData() {
-    const lat = this.state.position.coords.latitude;
-    const lng = this.state.position.coords.longitude;
+  fetchData(term = 'coffee') {
+    // const lat = this.state.position.coords.latitude;
+    // const lng = this.state.position.coords.longitude;
     const consumerKey = "aHkQvkO2mknb811VggwSodBjwyIVF65zfFq463PF9sxC088KEo8DfIkAGth0Pvwt4SnsBS7wMvnB16hJxB0b4m-c1qs5A36awFVek6CBG6c6Mz9tzKsGMDRFvh6aXHYx";
-    const location = 'New York';
-    const term = 'coffee';
-
-    let params = '';
-    if(lat && lng) {
-      params += `latitude=${lat}&longitude=${lng}`
-    } else if(location) {
-      params += `location=${location}`
-    }
+    // const location = 'New York';
+    // // const term = 'coffee';
+    //
+    let params = 'location=New York';
+    // if(lat && lng) {
+    //   params += `latitude=${lat}&longitude=${lng}`
+    // } else if(location) {
+    //   params += `location=${location}`
+    // }
     if(term) {
       params += `&term=${term}`
     }
@@ -60,19 +61,6 @@ class Coffee extends Component {
       console.log('output');
       console.log(this.state.businesses);
     });
-
-    // const nav = this.props.navigator;
-    //
-    // fetch(request.signed_url, {method: "GET"}).then(function(response){
-    //   return response.json()
-    // }).then(function(data){
-    //   nav.push({
-    //     ident: "Results",
-    //     data: data
-    //   })
-    // }).catch(function(error){
-    //   console.log("Error:", error)
-    // })
   }
 
   render() {
@@ -85,6 +73,7 @@ class Coffee extends Component {
 
     return (
       <View>
+        <SearchMenu fetchData={this.fetchData}/>
         <Text style={{fontSize: 30, textAlign:'center'}}>WheresMyCoffee?!</Text>
         <TouchableOpacity
           style={{borderRadius: 7,padding: 10,  backgroundColor: 'rgb(37, 160, 205)'}}
