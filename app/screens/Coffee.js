@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import { View, Text, TouchableOpacity, FlatList } from 'react-native';
 import { connect } from "react-redux";
 import Business from "../components/businesses/Business";
-import currencies from "../data/currencies";
-import {ListItem, Separator} from "../components/List";
+import {Separator} from "../components/List";
 
 class Coffee extends Component {
   static propTypes = {
@@ -101,8 +100,11 @@ class Coffee extends Component {
               name={item.name}
               url={item.url}
               image_url={item.image_url}
-              rating={item.rating}
+              categories={item.categories}
+              address={item.location.address1}
               phone={item.display_phone}
+              price={item.price}
+              rating={item.rating}
             />
           )}
           keyExtractor={item => item.id}
