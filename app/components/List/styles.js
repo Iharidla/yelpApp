@@ -17,6 +17,7 @@ export default EStyleSheet.create({
   },
   separator: {
     marginLeft: 20,
+    marginRight:20,
     backgroundColor: '$border',
     flex: 1,
     height: StyleSheet.hairlineWidth,

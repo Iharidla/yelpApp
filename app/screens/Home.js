@@ -10,7 +10,6 @@ import { connectAlert } from '../components/Alert';
 import {getInitialConversion} from '../actions/currencies';
 import YelpSearchBar from "../components/SearchBar/YelpSearchBar";
 import CategoryItem from "../components/CategoryItem/CategoryItem";
-import {Separator} from "../components/List";
 
 class Home extends Component {
   static propTypes = {
@@ -74,7 +73,6 @@ class Home extends Component {
                 <CategoryItem item={item} index={index} onPress={() => this.categorySearch(item.text, item.value)} />
               }
               numColumns={3}
-              ItemSeparatorComponent={Separator}
             />
         </KeyboardAvoidingView>
       </Container>
