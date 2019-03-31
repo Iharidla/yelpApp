@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, Keyboard, Animated, StyleSheet, Platform } from 'react-native';
+import {View, Text, Keyboard, Animated, StyleSheet, Platform, Image} from 'react-native';
 
 import styles from './styles';
 
@@ -68,39 +68,10 @@ class Logo extends Component {
   };
 
   render() {
-    const { containerImageWidth, imageWidth } = this.state;
-    const { tintColor } = this.props;
-
-    const imagesContainerStyles = [
-      styles.imagesContainer,
-      { width: containerImageWidth, height: containerImageWidth },
-    ];
-
-    const containerImageStyles = [
-      styles.containerImage,
-      { width: containerImageWidth, height: containerImageWidth },
-    ];
-    const imageStyles = [
-      styles.logo,
-      { width: imageWidth },
-      tintColor ? { tintColor } : null,
-    ];
 
     return (
       <View style={styles.container}>
-        <Animated.View style={imagesContainerStyles}>
-          <Animated.Image
-              resizeMode="contain"
-              style={[StyleSheet.absoluteFill, containerImageStyles]}
-              source={require('./images/background.png')}
-          />
-          <Animated.Image
-              resizeMode="contain"
-              style={imageStyles}
-              source={require('./images/logo.png')}
-          />
-        </Animated.View>
-        <Text style={styles.text}>Currency Converter</Text>
+        <Image resizeMode="contain" source={require('./images/fast_food.png')} />
       </View>
     )
   }
