@@ -11,7 +11,7 @@ const YelpSearchBar = ({ search = '', updateSearch }) => (
     value={search}
     lightTheme
     inputStyle={{color: 'black'}}
-    containerStyle={{width: 200}}
+    containerStyle={{width: 300}}
   />
 );
 

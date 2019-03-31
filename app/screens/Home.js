@@ -10,6 +10,8 @@ import { connectAlert } from '../components/Alert';
 import {getInitialConversion} from '../actions/currencies';
 import YelpSearchBar from "../components/SearchBar/YelpSearchBar";
 import Logo from "../components/Logo/Logo";
+import CategoryItem from "../components/CategoryItem/CategoryItem";
+import {Separator} from "../components/List";
 
 class Home extends Component {
   static propTypes = {
@@ -61,51 +63,24 @@ class Home extends Component {
       <Container backgroundColor={this.props.primaryColor}>
         <StatusBar translucent={false} barStyle="light-content" backgroundColor='#4F6D7A' />
         <Header onPress={this.handleOptionsPress} />
+        {/*remove keyboardAvoidingView after updating search bar*/}
         <KeyboardAvoidingView behavior="height">
-          <Logo tintColor={this.props.primaryColor}/>
+          {/*<Logo tintColor={this.props.primaryColor}/>*/}
           <YelpSearchBar updateSearch={this.updateSearch} search={this.state.text}/>
           <FlatList
             data={ this.props.categories }
-            renderItem={ ({item}) =>
-              <View style={styles.GridViewContainer}>
-                <Text style={styles.GridViewTextLayout} onPress={() => this.categorySearch(item.text, item.value)} > {item.text} </Text>
-              </View> }
+            renderItem={ ({item, index}) =>
+              <CategoryItem item={item} index={index} onPress={this.categorySearch(item.text, item.value)} />
+            }
             numColumns={3}
+            ItemSeparatorComponent={Separator}
           />
+          
         </KeyboardAvoidingView>
       </Container>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    backgroundColor: "#e5e5e5"
-  },
-  headerText: {
-    fontSize: 20,
-    textAlign: "center",
-    margin: 10,
-    fontWeight: "bold"
-  },
-  GridViewContainer: {
-    flex:1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: 100,
-    margin: 5,
-    backgroundColor: '#7B1FA2'
-  },
-  GridViewTextLayout: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    justifyContent: 'center',
-    color: '#fff',
-    padding: 10,
-  }
-});
 
 const mapStateToProps = (state) => {
   const { baseCurrency, quoteCurrency } = state.currencies;
