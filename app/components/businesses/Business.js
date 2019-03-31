@@ -4,7 +4,7 @@ import {StyleSheet, Text, View, Image, Linking, TouchableOpacity} from 'react-na
 const Business = ({name, url, image_url, categories, address, phone,  price, rating}) => {
   
   return(
-    <TouchableOpacity style={styles.resultRow} onClick={() => Linking.openURL(url)}>
+    <TouchableOpacity style={styles.resultRow} onPress={() => Linking.openURL(url)}>
       <View style={styles.image}>
         <Image source={{uri: image_url}}
                style={{width: 80, height: 80}}/>
