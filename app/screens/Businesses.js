@@ -7,7 +7,7 @@ import {Separator} from "../components/List";
 import {SearchMenu} from "../components/SearchMenu";
 import {Container} from "../components/Container";
 
-class Coffee extends Component {
+class Businesses extends Component {
   static propTypes = {
     navigation: PropTypes.object,
     dispatch: PropTypes.func,
@@ -112,4 +112,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(Coffee);
+export default connect(mapStateToProps)(Businesses);

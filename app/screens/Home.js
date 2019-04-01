@@ -64,7 +64,7 @@ class Home extends Component {
   searchFocus = () => {
     console.log("onFocus");
     const { navigation } = this.props;
-    navigation.navigate('Coffee');
+    navigation.navigate('Businesses');
   };
 
   render() {
