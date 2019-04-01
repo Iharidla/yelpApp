@@ -15,7 +15,6 @@ class Businesses extends Component {
 
   state = {
     businesses: [],
-    text: '',
   };
 
   setBusinesses = (businesses) => {
@@ -30,14 +29,14 @@ class Businesses extends Component {
     let check = this.state.businesses.length != 0;
     
     const { navigation } = this.props;
-    const autoFocus = navigation.getParam('autoFocus', false);
-
+    const searchParams = navigation.getParam('searchParams', {});
+    
     return (
       <Container backgroundColor={this.props.primaryColor}>
         <SearchMenu
           backgroundColor={this.props.primaryColor}
           setBusinesses={this.setBusinesses}
-          autoFocus={autoFocus}
+          searchParams={searchParams}
         />
         <View style={{backgroundColor: 'white'}}>
           { check ? <FlatList

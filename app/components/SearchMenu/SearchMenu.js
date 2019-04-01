@@ -113,17 +113,16 @@ class SearchMenu extends Component {
       }
     });
 
-    const {autoFocus} = this.props;
+    const {searchParams} = this.props;
 
-    console.log(autoFocus);
+    console.log(searchParams);
     
     return (
       <View style={styles.menu}>
         <SearchBar
           onChangeText={this.onChangeSearch}
           onSubmitEditing={this.onSearch}
-          text={this.state.text}
-          autoFocus={autoFocus}
+          searchParams={searchParams}
         />
         <View style={styles.container}>
           <FilterButton text={'Near me'} icon={'compass'} onPress={() => this.pressNear} />

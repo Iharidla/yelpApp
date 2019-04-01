@@ -51,9 +51,10 @@ class Home extends Component {
   searchPress = () => {
     console.log("searchPress");
     const { navigation } = this.props;
-    navigation.navigate('Businesses', {
-      autoFocus: true,
-    });
+    const searchParams = {
+      autoFocus: true
+    }
+    navigation.navigate('Businesses', {searchParams});
   };
 
   render() {
