@@ -3,7 +3,7 @@ import { createStackNavigator, createAppContainer } from 'react-navigation';
 import HomeScreen from '../screens/Home';
 import Options from '../screens/Options';
 import Themes from '../screens/Themes';
-import Coffee from "../screens/Coffee";
+import Businesses from "../screens/Businesses";
 
 const HomeStack = createStackNavigator(
   {
@@ -35,8 +35,8 @@ const AppNavigator = createStackNavigator(
     Home: {
       screen: HomeStack,
     },
-    Coffee: {
-      screen: Coffee
+    Businesses: {
+      screen: Businesses
     }
   },
   {

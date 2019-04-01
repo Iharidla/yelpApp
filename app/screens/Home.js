@@ -28,10 +28,6 @@ class Home extends Component {
     currencyError: PropTypes.string,
   };
 
-  state = {
-    text: '',
-  };
-
   componentDidMount() {
     this.props.dispatch(getInitialConversion());
   }
@@ -47,24 +43,17 @@ class Home extends Component {
     navigation.navigate('Options');
   };
 
-  updateSearch = (text) => {
-    console.log(`search text: ${text}`);
-    this.setState({text});
-  };
-
   categorySearch = (text, value) => {
     console.log(`category value: ${value}`);
-    this.setState({text: text});
+    // this.setState({text: text});
   };
 
-  onSearch = () => {
-    console.log("search");
-  };
-
-  searchFocus = () => {
-    console.log("onFocus");
+  searchPress = () => {
+    console.log("searchPress");
     const { navigation } = this.props;
-    navigation.navigate('Coffee');
+    navigation.navigate('Businesses', {
+      autoFocus: true,
+    });
   };
 
   render() {
@@ -84,10 +73,7 @@ class Home extends Component {
           <Logo />
           <View style={styles.categories}>
             <SearchBar
-              onChangeText={this.updateSearch}
-              onSubmitEditing={this.onSearch}
-              onFocus={this.searchFocus}
-              text={this.state.text}
+              onTouchStart={this.searchPress}
             />
             <FlatList
               data={ this.props.categories }
@@ -110,7 +96,7 @@ const mapStateToProps = (state) => {
   const { baseCurrency, quoteCurrency } = state.currencies;
   const conversionSelector = state.currencies.conversions[baseCurrency] || {};
   const rates = conversionSelector.rates || {};
-  console.log(state.currencies.categories);
+
   return {
     baseCurrency,
     quoteCurrency,
