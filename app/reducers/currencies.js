@@ -7,12 +7,12 @@ const initialState = {
   conversions: {},
   error: null,
   categories: [
-    {value: 'food', text: 'Food'},
-    {value: 'coffee', text: 'Coffee & Tea'},
-    {value: 'nightlife', text: 'Nightlife'},
-    {value: 'hotelstravel', text: 'Hotels & Travel'},
-    {value: 'shopping', text: 'Shopping'},
-    {value: 'restaurants', text: 'Restaurants'}
+    {value: 'food', text: 'Food', link: 'pizza'},
+    {value: 'coffee', text: 'Coffee & Tea', link:'cafe'},
+    {value: 'nightlife', text: 'Nightlife', link:'beer'},
+    {value: 'hotelstravel', text: 'Hotels & Travel', link:'bed'},
+    {value: 'shopping', text: 'Shopping', link:'cart'},
+    {value: 'restaurants', text: 'Restaurants', link:'restaurant'}
   ],
 };
 
