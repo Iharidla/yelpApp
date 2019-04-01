@@ -46,6 +46,11 @@ class Home extends Component {
   categorySearch = (text, value) => {
     console.log(`category value: ${value}`);
     // this.setState({text: text});
+    const { navigation } = this.props;
+    const searchParams = {
+      text: value
+    };
+    navigation.navigate('Businesses', {searchParams});
   };
 
   searchPress = () => {
@@ -53,7 +58,7 @@ class Home extends Component {
     const { navigation } = this.props;
     const searchParams = {
       autoFocus: true
-    }
+    };
     navigation.navigate('Businesses', {searchParams});
   };
 

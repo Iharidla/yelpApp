@@ -22,10 +22,10 @@ class SearchMenu extends Component {
       { enableHighAccuracy: true, timeout: 30000 }
     );
 
-    // const { text } = this.props;
-    // if(text != '') {
-    //   this.onSearch(text);
-    // }
+    const { text } = this.props.searchParams;
+    if(text != '') {
+      this.onSearch(text);
+    }
   }
   
   pressNear = () => {
@@ -122,7 +122,8 @@ class SearchMenu extends Component {
         <SearchBar
           onChangeText={this.onChangeSearch}
           onSubmitEditing={this.onSearch}
-          searchParams={searchParams}
+          text={this.state.text}
+          autoFocus={searchParams.autoFocus}
         />
         <View style={styles.container}>
           <FilterButton text={'Near me'} icon={'compass'} onPress={() => this.pressNear} />
