@@ -5,12 +5,7 @@ import Icon from "react-native-ionicons";
 
 const width = Dimensions.get('window').width * 0.9;
 
-const SearchBar = ({ onChangeText, onSubmitEditing,
-                     icon='search', onTouchStart,
-                     searchParams={
-                       text: '',
-                       autoFocus: false,
-                     }}) => (
+const SearchBar = ({ onChangeText, onSubmitEditing, icon='search', onTouchStart, text = '', autoFocus = false }) => (
   <View style={styles.searchInput}>
     <Icon
       name={icon}
@@ -23,11 +18,11 @@ const SearchBar = ({ onChangeText, onSubmitEditing,
       placeholder={'I\'m looking for...'}
       placeholderTextColor={'#999'}
       underlineColorAndroid={'#fff'}
-      value={searchParams.text}
+      value={text}
       onChangeText={onChangeText}
       onSubmitEditing={(event) => onSubmitEditing(event.nativeEvent.text)}
       onTouchStart={onTouchStart}
-      autoFocus={searchParams.autoFocus}
+      autoFocus={autoFocus}
     />
   </View>
 );
