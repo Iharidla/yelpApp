@@ -8,7 +8,7 @@ import { Header } from '../components/Header'
 import { connectAlert } from '../components/Alert';
 
 import {getInitialConversion} from '../actions/currencies';
-import {YelpSearchBar} from "../components/SearchBar";
+import {SearchBar} from "../components/SearchBar";
 import {CategoryItem} from "../components/CategoryItem";
 import {Logo} from "../components/Logo";
 
@@ -57,6 +57,16 @@ class Home extends Component {
     this.setState({text: text});
   };
 
+  onSearch = () => {
+    console.log("search");
+  };
+
+  searchFocus = () => {
+    console.log("onFocus");
+    const { navigation } = this.props;
+    navigation.navigate('Coffee');
+  };
+
   render() {
     const styles = StyleSheet.create({
       container: {
@@ -73,9 +83,11 @@ class Home extends Component {
         <View style={styles.container}>
           <Logo />
           <View style={styles.categories}>
-            <YelpSearchBar
-              updateSearch={this.updateSearch}
-              search={this.state.text}
+            <SearchBar
+              onChangeText={this.updateSearch}
+              onSubmitEditing={this.onSearch}
+              onFocus={this.searchFocus}
+              text={this.state.text}
             />
             <FlatList
               data={ this.props.categories }
