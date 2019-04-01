@@ -48,9 +48,12 @@ const styles = StyleSheet.create({
   },
 });
 
-YelpSearchBar.propTypes = {
+SearchBar.propTypes = {
   text: PropTypes.string,
-  updateSearch: PropTypes.func,
+  icon:PropTypes.string,
+  onChangeText: PropTypes.func,
+  onSubmitEditing: PropTypes.func,
+  onFocus: PropTypes.func,
 };
 
 export default SearchBar;
