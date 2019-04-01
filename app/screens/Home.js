@@ -110,7 +110,7 @@ const mapStateToProps = (state) => {
   const { baseCurrency, quoteCurrency } = state.currencies;
   const conversionSelector = state.currencies.conversions[baseCurrency] || {};
   const rates = conversionSelector.rates || {};
-  console.log(state.currencies.categories);
+
   return {
     baseCurrency,
     quoteCurrency,

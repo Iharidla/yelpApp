@@ -41,20 +41,27 @@ class SearchMenu extends Component {
       container: {
         flexDirection: 'row',
         justifyContent: 'space-between',
+        margin: 10,
+        width: '80%',
+        alignItems: 'center',
       },
       hairline: {
-        backgroundColor: '#A2A2A2',
-        height: 2,
+        backgroundColor: 'white',
+        height: 1,
         width: '90%',
       },
+      menu: {
+        marginTop: 15,
+        alignItems: 'center',
+      }
     });
     
     return (
-      <View>
+      <View style={styles.menu}>
         <SearchBar updateSearch={this.updateSearch} search={this.state.text}/>
         <View style={styles.container}>
           <FilterButton text={'Near me'} icon={'compass'} onPress={() => this.pressNear} />
-          <Icon name="map" />
+          <Icon name="map" size={30} color='white' />
         </View>
         <View style={styles.hairline} />
         <View style={styles.container}>

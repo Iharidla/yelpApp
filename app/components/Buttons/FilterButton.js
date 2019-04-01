@@ -8,8 +8,8 @@ import Icon from 'react-native-ionicons';
 const FilterButton = ({ text, icon, onPress }) => (
   <TouchableOpacity onPress={onPress}>
     <View style={styles.container}>
-      <Icon name={icon} />
-      <Text>{text}</Text>
+      <Icon name={icon} size={20} color='white'/>
+      <Text style={styles.text}>{text}</Text>
     </View>
   </TouchableOpacity>
 );
@@ -20,6 +20,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flexDirection: 'row',
   },
+  text: {
+    paddingLeft: 5,
+    color: 'white',
+  }
 });
 
 FilterButton.propTypes = {

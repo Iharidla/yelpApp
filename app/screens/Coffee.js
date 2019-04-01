@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, TouchableOpacity, FlatList } from 'react-native';
 import { connect } from "react-redux";
-import Business from "../components/businesses/Business";
+import {Business} from "../components/Businesses";
 import {Separator} from "../components/List";
 import {SearchMenu} from "../components/SearchMenu";
+import {Container} from "../components/Container";
 
 class Coffee extends Component {
   static propTypes = {
@@ -69,39 +70,46 @@ class Coffee extends Component {
 
     let check = this.state.businesses.length != 0;
 
-    console.log(check);
-
     return (
-      <View>
-        <SearchMenu fetchData={this.fetchData}/>
-        <Text style={{fontSize: 30, textAlign:'center'}}>WheresMyCoffee?!</Text>
+      <Container backgroundColor={this.props.primaryColor}>
+        <SearchMenu fetchData={this.fetchData} backgroundColor={this.props.primaryColor}/>
+        {/*<Text style={{fontSize: 30, textAlign:'center'}}>WheresMyCoffee?!</Text>*/}
         <TouchableOpacity
           style={{borderRadius: 7,padding: 10,  backgroundColor: 'rgb(37, 160, 205)'}}
           onPress={this.fetchData.bind(this)}
         >
           <Text style={{fontSize: 15}}>Find Coffee!</Text>
         </TouchableOpacity>
-        <Text style={{fontSize: 30, textAlign:'center'}}>Results</Text>
-        { check ? <FlatList
-          data={this.state.businesses}
-          renderItem={({ item }) => (
-            <Business
-              name={item.name}
-              url={item.url}
-              image_url={item.image_url}
-              categories={item.categories}
-              address={item.location.address1}
-              phone={item.display_phone}
-              price={item.price}
-              rating={item.rating}
-            />
-          )}
-          keyExtractor={item => item.id}
-          ItemSeparatorComponent={Separator}
-        /> : null }
-      </View>
+        <View style={{backgroundColor: 'white'}}>
+          {/*<Text style={{fontSize: 30, textAlign:'center'}}>Results</Text>*/}
+          { check ? <FlatList
+            data={this.state.businesses}
+            renderItem={({ item }) => (
+              <Business
+                name={item.name}
+                url={item.url}
+                image_url={item.image_url}
+                categories={item.categories}
+                address={item.location.address1}
+                phone={item.display_phone}
+                price={item.price}
+                rating={item.rating}
+              />
+            )}
+            keyExtractor={item => item.id}
+            ItemSeparatorComponent={Separator}
+          /> : null }
+        </View>
+      </Container>
     );
   }
 }
 
-export default connect()(Coffee);
+const mapStateToProps = (state) => {
+  return {
+    primaryColor: state.theme.primaryColor,
+    currencyError: state.currencies.error,
+  };
+};
+
+export default connect(mapStateToProps)(Coffee);
