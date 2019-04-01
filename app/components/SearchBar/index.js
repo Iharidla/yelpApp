@@ -1,4 +1,4 @@
-import YelpSearchBar from './YelpSearchBar';;
+import SearchBar from './SearchBar';;
 import styles from './styles';
 
-export { YelpSearchBar, styles };
+export { SearchBar, styles };

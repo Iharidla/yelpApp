@@ -4,7 +4,7 @@ import {StyleSheet, View} from 'react-native';
 import { connect } from "react-redux";
 import Icon from 'react-native-ionicons';
 
-import {YelpSearchBar} from "../SearchBar";
+import {SearchBar} from "../SearchBar";
 import {FilterButton} from '../Buttons';
 
 class SearchMenu extends Component {
@@ -51,7 +51,7 @@ class SearchMenu extends Component {
     
     return (
       <View>
-        <YelpSearchBar updateSearch={this.updateSearch} search={this.state.text}/>
+        <SearchBar updateSearch={this.updateSearch} search={this.state.text}/>
         <View style={styles.container}>
           <FilterButton text={'Near me'} icon={'compass'} onPress={() => this.pressNear} />
           <Icon name="map" />
