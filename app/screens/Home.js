@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { StatusBar, KeyboardAvoidingView, FlatList } from 'react-native';
+import {StatusBar, FlatList, View, StyleSheet, Dimensions} from 'react-native';
 import { connect } from 'react-redux';
 
 import { Container } from '../components/Container';
@@ -8,8 +8,9 @@ import { Header } from '../components/Header'
 import { connectAlert } from '../components/Alert';
 
 import {getInitialConversion} from '../actions/currencies';
-import YelpSearchBar from "../components/SearchBar/YelpSearchBar";
-import CategoryItem from "../components/CategoryItem/CategoryItem";
+import {YelpSearchBar} from "../components/SearchBar";
+import {CategoryItem} from "../components/CategoryItem";
+import {Logo} from "../components/Logo";
 
 class Home extends Component {
   static propTypes = {
@@ -57,24 +58,37 @@ class Home extends Component {
   };
 
   render() {
+    const styles = StyleSheet.create({
+      container: {
+        flex:1,
+        flexDirection:'column',
+        alignItems: 'center',
+        width: Dimensions.get('window').width,
+      }
+    });
     return (
       <Container backgroundColor={this.props.primaryColor}>
         <StatusBar translucent={false} barStyle="light-content" backgroundColor='#4F6D7A' />
         <Header onPress={this.handleOptionsPress} />
-        {/*remove keyboardAvoidingView after updating search bar*/}
-        <KeyboardAvoidingView behavior="height">
-          {/*<Logo tintColor={this.props.primaryColor}/>*/}
+        <View style={styles.container}>
+          <Logo />
+          <View style={styles.categories}>
             <YelpSearchBar
               updateSearch={this.updateSearch}
-              search={this.state.text}/>
+              search={this.state.text}
+            />
             <FlatList
               data={ this.props.categories }
+              keyExtractor={(item) => item.index}
+              removeClippedSubviews={false}
               renderItem={ ({item, index}) =>
                 <CategoryItem item={item} index={index} onPress={() => this.categorySearch(item.text, item.value)} />
               }
-              numColumns={3}
+              numColumns={2}
+              style={{ flex: 1 }}
             />
-        </KeyboardAvoidingView>
+          </View>
+        </View>
       </Container>
     );
   }

@@ -3,7 +3,7 @@ import React from 'react';
 import { SearchBar } from 'react-native-elements';
 import {Dimensions} from "react-native";
 
-const width = Dimensions.get('window').width;
+const width = Dimensions.get('window').width * 0.9;
 
 const YelpSearchBar = ({ search = '', updateSearch }) => (
   <SearchBar

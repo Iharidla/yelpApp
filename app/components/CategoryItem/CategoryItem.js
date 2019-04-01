@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import Icon from "react-native-ionicons";
 
-const ICON_COLOR = 'black';
+const ICON_COLOR = 'white';
 const ICON_SIZE = 50;
 
 const CategoryItem = ({item, onPress}) => (
@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
   GridViewTextLayout:{
     fontSize: 20,
     textAlign: 'center',
+    color: 'white',
   },
   GridViewContainer:{
     flex:1,
