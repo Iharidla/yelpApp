@@ -1,7 +1,6 @@
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 
 import HomeScreen from '../screens/Home';
-import CurrencyListScreen from '../screens/CurrencyList';
 import Options from '../screens/Options';
 import Themes from '../screens/Themes';
 import Coffee from "../screens/Coffee";
@@ -30,25 +29,11 @@ const HomeStack = createStackNavigator(
     headerMode: 'screen',
   });
 
-const CurrencyListStack = createStackNavigator(
-  {
-    CurrencyList: {
-      screen: CurrencyListScreen,
-      navigationOptions: ({ navigation }) => ({
-        headerTitle: navigation.state.params.title,
-      }),
-    },
-  });
-
-
 
 const AppNavigator = createStackNavigator(
   {
     Home: {
       screen: HomeStack,
-    },
-    CurrencyList: {
-      screen: CurrencyListStack
     },
     Coffee: {
       screen: Coffee
