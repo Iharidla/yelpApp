@@ -20,7 +20,7 @@ export default EStyleSheet.create({
     marginRight:20,
     backgroundColor: '$border',
     flex: 1,
-    height: StyleSheet.hairlineWidth,
+    height: StyleSheet.hairlineWidth*2,
   },
   icon: {
     backgroundColor: 'transparent',

@@ -11,8 +11,24 @@ class SearchMenu extends Component {
   
   state = {
     text: '',
+    position: 'unknown',
   };
-  
+
+  componentDidMount() {
+    navigator.geolocation.getCurrentPosition((position) => {
+        this.setState({position});
+      },
+      (error) => { console.log(error); },
+      { enableHighAccuracy: true, timeout: 30000 }
+    );
+
+    const { text } = this.props;
+    if(text != '') {
+      this.onSearch(text);
+    }
+  }
+
+
   updateSearch = (text) => {
     const {fetchData} = this.props;
     console.log(`search text: ${text}`);
@@ -35,6 +51,53 @@ class SearchMenu extends Component {
   pressNewOpen = () => {
     console.log("new open pressed");
   };
+
+  onSearch = (text) => {
+    console.log(`search text: ${text}`);
+    this.fetchData(text)
+    this.setState({text});
+  };
+
+  onChangeSearch = (text) => {
+    this.setState({text});
+    console.log(`typed text: ${text}`);
+  };
+
+  fetchData(term = 'coffee') {
+    const lat = this.state.position.coords.latitude || 0;
+    const lng = this.state.position.coords.longitude || 0;
+    const consumerKey = "aHkQvkO2mknb811VggwSodBjwyIVF65zfFq463PF9sxC088KEo8DfIkAGth0Pvwt4SnsBS7wMvnB16hJxB0b4m-c1qs5A36awFVek6CBG6c6Mz9tzKsGMDRFvh6aXHYx";
+    const location = 'New York';
+    // // const term = 'coffee';
+    //
+    let params = '';
+    if(lat !== 0 && lng !== 0) {
+      params += `latitude=${lat}&longitude=${lng}`
+    } else if(location) {
+      params += `location=${location}`
+    }
+    if(term) {
+      params += `&term=${term}`
+    }
+
+    console.log(`params: ${params}`);
+
+    const resp = fetch(`https://api.yelp.com/v3/businesses/search?${params}`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Authorization': `Bearer ${consumerKey}`,
+        'Content-Type': 'application/json',
+      },
+    }).then((res) => {
+      return res.json();
+    }).then((obj) => {
+      this.props.setBusinesses(obj.businesses);
+    }).then((obj) => {
+      console.log('output');
+      console.log(this.state.businesses);
+    });
+  }
  
   render() {
     const styles = StyleSheet.create({
@@ -55,10 +118,19 @@ class SearchMenu extends Component {
         alignItems: 'center',
       }
     });
+
+    const {autoFocus} = this.props.params
+
+    console.log(autoFocus);
     
     return (
       <View style={styles.menu}>
-        <SearchBar updateSearch={this.updateSearch} search={this.state.text}/>
+        <SearchBar
+          onChangeText={this.onChangeSearch}
+          onSubmitEditing={this.onSearch}
+          text={this.state.text}
+          autoFocus={this.props.autoFocus}
+        />
         <View style={styles.container}>
           <FilterButton text={'Near me'} icon={'compass'} onPress={() => this.pressNear} />
           <Icon name="map" size={30} color='white' />
