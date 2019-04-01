@@ -22,19 +22,11 @@ class SearchMenu extends Component {
       { enableHighAccuracy: true, timeout: 30000 }
     );
 
-    const { text } = this.props;
-    if(text != '') {
-      this.onSearch(text);
-    }
+    // const { text } = this.props;
+    // if(text != '') {
+    //   this.onSearch(text);
+    // }
   }
-
-
-  updateSearch = (text) => {
-    const {fetchData} = this.props;
-    console.log(`search text: ${text}`);
-    fetchData(text);
-    this.setState({text});
-  };
   
   pressNear = () => {
     console.log("near me pressed");
@@ -64,8 +56,10 @@ class SearchMenu extends Component {
   };
 
   fetchData(term = 'coffee') {
-    const lat = this.state.position.coords.latitude || 0;
-    const lng = this.state.position.coords.longitude || 0;
+    // const lat = this.state.position.coords.latitude || 0;
+    // const lng = this.state.position.coords.longitude || 0;
+    const lat = 0;
+    const lng = 0;
     const consumerKey = "aHkQvkO2mknb811VggwSodBjwyIVF65zfFq463PF9sxC088KEo8DfIkAGth0Pvwt4SnsBS7wMvnB16hJxB0b4m-c1qs5A36awFVek6CBG6c6Mz9tzKsGMDRFvh6aXHYx";
     const location = 'New York';
     // // const term = 'coffee';
@@ -90,13 +84,13 @@ class SearchMenu extends Component {
         'Content-Type': 'application/json',
       },
     }).then((res) => {
+      console.log(res);
       return res.json();
     }).then((obj) => {
       this.props.setBusinesses(obj.businesses);
-    }).then((obj) => {
-      console.log('output');
-      console.log(this.state.businesses);
     });
+    console.log('resp');
+    console.log(JSON.stringify(resp));
   }
  
   render() {
@@ -119,7 +113,7 @@ class SearchMenu extends Component {
       }
     });
 
-    const {autoFocus} = this.props.params
+    const {autoFocus} = this.props;
 
     console.log(autoFocus);
     
@@ -129,7 +123,7 @@ class SearchMenu extends Component {
           onChangeText={this.onChangeSearch}
           onSubmitEditing={this.onSearch}
           text={this.state.text}
-          autoFocus={this.props.autoFocus}
+          autoFocus={autoFocus}
         />
         <View style={styles.container}>
           <FilterButton text={'Near me'} icon={'compass'} onPress={() => this.pressNear} />

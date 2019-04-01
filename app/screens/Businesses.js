@@ -16,17 +16,10 @@ class Businesses extends Component {
   state = {
     businesses: [],
     text: '',
-    autoFocus: false,
   };
 
-  componentDidMount() {
-    const { navigation } = this.props;
-
-    this.setState({text: navigation.getParam('text', '')});
-    this.setState({autoFocus: navigation.getParam('autoFocus', false)});
-  }
-
   setBusinesses = (businesses) => {
+    console.log(...businesses);
     this.setState({businesses});
   };
 
@@ -35,10 +28,17 @@ class Businesses extends Component {
     console.log(this.state.businesses);
 
     let check = this.state.businesses.length != 0;
+    
+    const { navigation } = this.props;
+    const autoFocus = navigation.getParam('autoFocus', false);
 
     return (
       <Container backgroundColor={this.props.primaryColor}>
-        {/*<SearchMenu backgroundColor={this.props.primaryColor} setBusinesses={this.setBusinesses} text={this.state.text} autoFocus={this.state.autoFocus} />*/}
+        <SearchMenu
+          backgroundColor={this.props.primaryColor}
+          setBusinesses={this.setBusinesses}
+          autoFocus={autoFocus}
+        />
         <View style={{backgroundColor: 'white'}}>
           { check ? <FlatList
             data={this.state.businesses}
