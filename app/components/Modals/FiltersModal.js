@@ -7,7 +7,7 @@ const data=[1, 2, 3, 4];
 const sortTitles=['relevance', 'most popular', 'highest rated'];
 const time=['opened now', "opened at"];
 
-const FiltersModal = ({setModalVisible, isVisible, setPrice}) => (
+const FiltersModal = ({setModalVisible, isVisible, setPrice, setTime, setSortBy}) => (
   <Modal
     isVisible={isVisible}
     onBackdropPress={() => setModalVisible(false)}
@@ -25,8 +25,7 @@ const FiltersModal = ({setModalVisible, isVisible, setPrice}) => (
           {
             sortTitles.map((item) => (
               <TouchableHighlight
-                //add function for on Press
-                // onPress={}
+                onPress={() => setSortBy(item)}
                 style={{
                   width: `${100/sortTitles.length}%`,
                   flexDirection: 'row',
@@ -76,8 +75,7 @@ const FiltersModal = ({setModalVisible, isVisible, setPrice}) => (
           {
             time.map((item) => (
               <TouchableHighlight
-                //add function for on Press
-                // onPress={}
+                onPress={() => setTime(item)}
                 style={{
                   width: `${100/time.length}%`,
                   flexDirection: 'row',

@@ -105,19 +105,30 @@ class SearchMenu extends Component {
   };
 
   setPrice = (price) => {
-    let filters = {...this.state.filters};
-    filters.orderBy.price = price;
-    this.setState({filters});
+    this.setPriceFilter(price)
     this.setPriceModalVisible(false);
   };
 
   setFiltersModalVisible = (visible) => {
     this.setState({filtersModal: visible});
   };
-
-  setFilters = (filters) => {
+  
+  setPriceFilter = (price) => {
+    let filters = {...this.state.filters};
+    filters.orderBy.price = price;
     this.setState({filters});
-    this.setFiltersModalVisible(false);
+  };
+  
+  setTimeFilter = (time) => {
+    let filters = {...this.state.filters};
+    filters.orderBy.time = time;
+    this.setState({filters});
+  };
+  
+  setSortBy = (sortBy) => {
+    let filters = {...this.state.filters};
+    filters.sortBy = sortBy;
+    this.setState({filters});
   };
 
   fetchData(term = '') {
@@ -208,7 +219,9 @@ class SearchMenu extends Component {
         <FiltersModal
           setModalVisible={this.setFiltersModalVisible}
           isVisible={this.state.filtersModal}
-          setPrice={this.setFilters}
+          setPrice={this.setPriceFilter}
+          setTime={this.setTimeFilter}
+          setSortBy={this.setSortBy}
         />
 
         <PriceModal
