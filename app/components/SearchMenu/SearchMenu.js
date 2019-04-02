@@ -6,7 +6,7 @@ import Icon from 'react-native-ionicons';
 
 import {SearchBar} from "../SearchBar";
 import {FilterButton} from '../Buttons';
-import {PriceModal} from "../Modals";
+import {PriceModal, FiltersModal} from "../Modals";
 
 class SearchMenu extends Component {
   
@@ -14,8 +14,16 @@ class SearchMenu extends Component {
     text: '',
     position: 'unknown',
     icon: 'search',
+    filters: {
+      sortBy: '',
+      orderBy: {
+        price: '',
+        time: '',
+      },
+    },
     priceModal: false,
     price: '',
+    filtersModal: false,
   };
 
   componentDidMount() {
@@ -39,6 +47,7 @@ class SearchMenu extends Component {
   };
   
   pressFilter = () => {
+    this.setFiltersModalVisible(true);
     console.log("filter pressed");
   };
   
@@ -96,8 +105,19 @@ class SearchMenu extends Component {
   };
 
   setPrice = (price) => {
-    this.setState({price});
-    this.setState({priceModal: false});
+    let filters = {...this.state.filters};
+    filters.orderBy.price = price;
+    this.setState({filters});
+    this.setPriceModalVisible(false);
+  };
+
+  setFiltersModalVisible = (visible) => {
+    this.setState({filtersModal: visible});
+  };
+
+  setFilters = (filters) => {
+    this.setState({filters});
+    this.setFiltersModalVisible(false);
   };
 
   fetchData(term = '') {
@@ -184,6 +204,12 @@ class SearchMenu extends Component {
           <FilterButton text={'Price'} icon={'logo-usd'} onPress={this.pressPriceFilter} />
           <FilterButton text={'Now Open'} icon={'clock'} onPress={this.pressNewOpen} />
         </View>
+
+        <FiltersModal
+          setModalVisible={this.setFiltersModalVisible}
+          isVisible={this.state.filtersModal}
+          setPrice={this.setFilters}
+        />
 
         <PriceModal
           setModalVisible={this.setPriceModalVisible}
