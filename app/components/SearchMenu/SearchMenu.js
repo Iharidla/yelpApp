@@ -12,6 +12,7 @@ class SearchMenu extends Component {
   state = {
     text: '',
     position: 'unknown',
+    icon: 'search',
   };
 
   componentDidMount() {
@@ -24,12 +25,14 @@ class SearchMenu extends Component {
 
     const { text } = this.props.searchParams;
     if(text != '') {
+      this.setState({icon: 'arrow-round-back'});
       this.onSearch(text);
     }
   }
   
   pressNear = () => {
     console.log("near me pressed");
+    this.iconPress();
   };
   
   pressFilter = () => {
@@ -55,7 +58,36 @@ class SearchMenu extends Component {
     console.log(`typed text: ${text}`);
   };
 
-  fetchData(term = 'coffee') {
+  onEndEditing = () => {
+    const {text} = this.state;
+    if(text != ''){
+      this.setState({icon: 'arrow-round-back'});
+    } else {
+      this.setState({icon: 'search'});
+    }
+    console.log(`onEndEditing`);
+  };
+
+  onFocus = () => {
+    const {text} = this.state;
+    if(text != ''){
+      this.setState({icon: 'close'});
+    }
+  };
+
+  iconPress = () => {
+    const {icon} = this.state;
+    if(icon == 'arrow-round-back'){
+      this.props.goBack();
+    } else if(icon == 'close') {
+      this.setState({text: ''});
+      this.setState({icon: 'search'});
+    } else {
+      return false;
+    }
+  };
+
+  fetchData(term = '') {
     // const lat = this.state.position.coords.latitude || 0;
     // const lng = this.state.position.coords.longitude || 0;
     const lat = 0;
@@ -124,16 +156,20 @@ class SearchMenu extends Component {
           onSubmitEditing={this.onSearch}
           text={this.state.text}
           autoFocus={searchParams.autoFocus}
+          onEndEditing={this.onEndEditing}
+          onFocus={this.onFocus}
+          icon={this.state.icon}
+          iconPress={this.iconPress}
         />
         <View style={styles.container}>
-          <FilterButton text={'Near me'} icon={'compass'} onPress={() => this.pressNear} />
+          <FilterButton text={'Near me'} icon={'compass'} onPress={this.pressNear} />
           <Icon name="map" size={30} color='white' />
         </View>
         <View style={styles.hairline} />
         <View style={styles.container}>
-          <FilterButton text={'Filter'} icon={'options'} onPress={() => this.pressFilter} />
-          <FilterButton text={'Price'} icon={'logo-usd'} onPress={() => this.pressPriceFilter} />
-          <FilterButton text={'Now Open'} icon={'clock'} onPress={() => this.pressNewOpen} />
+          <FilterButton text={'Filter'} icon={'options'} onPress={this.pressFilter} />
+          <FilterButton text={'Price'} icon={'logo-usd'} onPress={this.pressPriceFilter} />
+          <FilterButton text={'Now Open'} icon={'clock'} onPress={this.pressNewOpen} />
         </View>
       </View>
     );
