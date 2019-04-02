@@ -22,6 +22,12 @@ class Businesses extends Component {
     this.setState({businesses});
   };
 
+  goBack = () => {
+    console.log("go back")
+    const {navigation} = this.props;
+    navigation.goBack(null);
+  };
+
   render() {
     console.log('output');
     console.log(this.state.businesses);
@@ -37,6 +43,7 @@ class Businesses extends Component {
           backgroundColor={this.props.primaryColor}
           setBusinesses={this.setBusinesses}
           searchParams={searchParams}
+          goBack={this.goBack}
         />
         <View style={{backgroundColor: 'white'}}>
           { check ? <FlatList
