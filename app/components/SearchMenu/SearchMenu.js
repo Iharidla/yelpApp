@@ -107,7 +107,7 @@ class SearchMenu extends Component {
     if(filters.orderBy.price == price){
       filters.orderBy.price = null;
     } else {
-      filters.orderBy = {price};
+      filters.orderBy.price = price;
     }
 
     this.setState({filters});
@@ -121,7 +121,7 @@ class SearchMenu extends Component {
     if(filters.orderBy.time.title == title){
       filters.orderBy.time.title = '';
     } else {
-      filters.orderBy.time = {title};
+      filters.orderBy.time.title = title;
     }
 
     this.setState({filters});
@@ -134,7 +134,7 @@ class SearchMenu extends Component {
     if(filters.sortBy == sortBy){
       filters.sortBy = 'best_match';
     } else {
-      filters = {sortBy};
+      filters.sortBy = sortBy;
     }
 
     this.setState({filters});
@@ -218,7 +218,7 @@ class SearchMenu extends Component {
 
     const {text, icon, filtersModal, filters, priceModal} = this.state;
 
-    console.log(`primary color: ${primaryColor}`)
+    console.log(`filters: ${JSON.stringify(filters)}`);
     
     return (
       <View style={styles.menu}>

@@ -9,6 +9,7 @@ const FilterList = ({data, onPress, current}) => (
           <TouchableHighlight
             onPress={() => onPress(item.value)}
             underlayColor={'#dcdcdc'}
+            key={item.text}
             style={[{
               width: `${100/data.length}%`,
               flexDirection: 'row',
