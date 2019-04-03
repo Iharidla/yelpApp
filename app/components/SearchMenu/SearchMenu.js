@@ -47,20 +47,6 @@ class SearchMenu extends Component {
     console.log("near me pressed");
     this.iconPress();
   };
-  
-  pressFilter = () => {
-    this.setFiltersModalVisible(true);
-    console.log("filter pressed");
-  };
-  
-  pressPriceFilter = () => {
-    this.setPriceModalVisible(true);
-    console.log("price filter pressed");
-  };
-  
-  pressNewOpen = () => {
-    console.log("new open pressed");
-  };
 
   onSearch = (text) => {
     console.log(`search text: ${text}`);
@@ -121,20 +107,21 @@ class SearchMenu extends Component {
     if(filters.orderBy.price == price){
       filters.orderBy.price = null;
     } else {
-      filters.orderBy.price = price;
+      filters.orderBy = {price};
     }
 
     this.setState({filters});
     this.fetchData();
   };
-  
-  setTimeFilter = (time) => {
+
+  setTimeNow = () => {
+    const title = 'open_now';
     let filters = {...this.state.filters};
 
-    if(filters.orderBy.time == time){
-      filters.orderBy.time = null;
+    if(filters.orderBy.time.title == title){
+      filters.orderBy.time.title = '';
     } else {
-      filters.orderBy.time = time;
+      filters.orderBy.time = {title};
     }
 
     this.setState({filters});
@@ -147,7 +134,7 @@ class SearchMenu extends Component {
     if(filters.sortBy == sortBy){
       filters.sortBy = 'best_match';
     } else {
-      filters.sortBy = sortBy;
+      filters = {sortBy};
     }
 
     this.setState({filters});
@@ -182,11 +169,11 @@ class SearchMenu extends Component {
     if(orderBy.price!=null){
       params += `&price=${orderBy.price}`
     }
-    // if(orderBy.time.at!=null){
-    //   params += `&open_at=${orderBy.time.at}`
-    // } else if(orderBy.time.title != ''){
-    //   params += `&open_now=true`
-    // }
+    if(orderBy.time.at!=null){
+      params += `&open_at=${orderBy.time.at}`
+    } else if(orderBy.time.title != ''){
+      params += `&open_now=true`
+    }
 
     console.log(`params: ${params}`);
 
@@ -249,9 +236,9 @@ class SearchMenu extends Component {
         </View>
         <View style={styles.hairline} />
         <View style={styles.container}>
-          <FilterButton text={'Filter'} icon={'options'} onPress={this.pressFilter} />
-          <FilterButton text={'Price'} icon={'logo-usd'} onPress={this.pressPriceFilter} />
-          <FilterButton text={'Now Open'} icon={'clock'} onPress={this.pressNewOpen} />
+          <FilterButton text={'Filter'} icon={'options'} onPress={() => this.setFiltersModalVisible(true)} />
+          <FilterButton text={'Price'} icon={'logo-usd'} onPress={() => this.setPriceModalVisible(true)} />
+          <FilterButton text={'Now Open'} icon={'clock'} onPress={() => this.setTimeNow()} />
         </View>
 
         <FiltersModal
@@ -261,6 +248,7 @@ class SearchMenu extends Component {
           setTime={this.setTimeFilter}
           setSortBy={this.setSortBy}
           filters={filters}
+          setTimeNow={this.setTimeNow}
         />
 
         <PriceModal
