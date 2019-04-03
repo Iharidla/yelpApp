@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Dimensions, View, TextInput, StyleSheet, TouchableOpacity} from "react-native";
+import {Dimensions, View, TextInput, StyleSheet} from "react-native";
 import Icon from "react-native-ionicons";
 
 const width = Dimensions.get('window').width * 0.9;
