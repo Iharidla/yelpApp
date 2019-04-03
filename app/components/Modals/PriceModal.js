@@ -1,34 +1,20 @@
 import React from 'react';
 import {Text, TouchableHighlight, View, FlatList} from 'react-native';
 import Modal from "react-native-modal";
+import {FilterList} from "../FilterList";
 
-const PriceModal = ({setModalVisible, isVisible, setPrice}) => (
+const data=[{value: 1, text: '$'}, {value: 2, text: '$$'}, {value: 3, text: '$$$'}, {value: 4, text: '$$$$'}];
+
+const PriceModal = ({setModalVisible, isVisible, setPrice, current}) => (
   <Modal
     isVisible={isVisible}
     onBackdropPress={() => setModalVisible(false)}
     onSwipeComplete={() => setModalVisible(false)}
     swipeDirection="up"
   >
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <View style={{ height: 100, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', padding: 20}}>
-        <FlatList
-          data={ [1, 2, 3, 4] }
-          keyExtractor={(item) => item.index}
-          removeClippedSubviews={false}
-          horizontal={true}
-          contentContainerStyle={{alignItems: 'center'}}
-          renderItem={ ({item}) =>
-            <View style={{flexDirection: 'row'}}>
-              <TouchableHighlight onPress={() => setPrice('$'.repeat(item))}>
-                <Text style={{padding: 5}}>{'$'.repeat(item)}</Text>
-              </TouchableHighlight>
-              {(item!=4) && <View style={{ width: 1, backgroundColor: '#E2E2E2'}} />}
-            </View>
-          }
-        />
-        <TouchableHighlight onPress={() => setModalVisible(!isVisible)}>
-          <Text>Cancel</Text>
-        </TouchableHighlight>
+    <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+      <View style={{ backgroundColor: '#4F6D7A', alignItems: 'center', padding: 20, borderRadius: 20, justifyContent: 'space-between'}}>
+        <FilterList data={data} onPress={setPrice} current={current}/>
       </View>
     </View>
   </Modal>

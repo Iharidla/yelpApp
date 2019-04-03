@@ -15,14 +15,16 @@ class SearchMenu extends Component {
     position: 'unknown',
     icon: 'search',
     filters: {
-      sortBy: '',
+      sortBy: 'best_match',
       orderBy: {
-        price: '',
-        time: '',
+        price: null,
+        time: {
+          title: '',
+          at: null,
+        }
       },
     },
     priceModal: false,
-    price: '',
     filtersModal: false,
   };
 
@@ -62,8 +64,8 @@ class SearchMenu extends Component {
 
   onSearch = (text) => {
     console.log(`search text: ${text}`);
-    this.fetchData(text)
     this.setState({text});
+    this.fetchData();
   };
 
   onChangeSearch = (text) => {
@@ -115,23 +117,44 @@ class SearchMenu extends Component {
   
   setPriceFilter = (price) => {
     let filters = {...this.state.filters};
-    filters.orderBy.price = price;
+
+    if(filters.orderBy.price == price){
+      filters.orderBy.price = null;
+    } else {
+      filters.orderBy.price = price;
+    }
+
     this.setState({filters});
+    this.fetchData();
   };
   
   setTimeFilter = (time) => {
     let filters = {...this.state.filters};
-    filters.orderBy.time = time;
+
+    if(filters.orderBy.time == time){
+      filters.orderBy.time = null;
+    } else {
+      filters.orderBy.time = time;
+    }
+
     this.setState({filters});
+    this.fetchData();
   };
   
   setSortBy = (sortBy) => {
     let filters = {...this.state.filters};
-    filters.sortBy = sortBy;
+
+    if(filters.sortBy == sortBy){
+      filters.sortBy = 'best_match';
+    } else {
+      filters.sortBy = sortBy;
+    }
+
     this.setState({filters});
+    this.fetchData();
   };
 
-  fetchData(term = '') {
+  fetchData = () => {
     // const lat = this.state.position.coords.latitude || 0;
     // const lng = this.state.position.coords.longitude || 0;
     const lat = 0;
@@ -140,15 +163,30 @@ class SearchMenu extends Component {
     const location = 'New York';
     // // const term = 'coffee';
     //
+    const {orderBy, sortBy} = this.state.filters;
+    const {text} = this.state;
+
     let params = '';
+
     if(lat !== 0 && lng !== 0) {
       params += `latitude=${lat}&longitude=${lng}`
     } else if(location) {
       params += `location=${location}`
     }
-    if(term) {
-      params += `&term=${term}`
+    if(text!='') {
+      params += `&term=${text}`
     }
+    if(sortBy!=''){
+      params += `&sort_by=${sortBy}`
+    }
+    if(orderBy.price!=null){
+      params += `&price=${orderBy.price}`
+    }
+    // if(orderBy.time.at!=null){
+    //   params += `&open_at=${orderBy.time.at}`
+    // } else if(orderBy.time.title != ''){
+    //   params += `&open_now=true`
+    // }
 
     console.log(`params: ${params}`);
 
@@ -167,7 +205,7 @@ class SearchMenu extends Component {
     });
     console.log('resp');
     console.log(JSON.stringify(resp));
-  }
+  };
  
   render() {
     const styles = StyleSheet.create({
@@ -191,18 +229,18 @@ class SearchMenu extends Component {
 
     const {searchParams} = this.props;
 
-    console.log(this.state.priceModal);
+    const {text, icon, filtersModal, filters, priceModal} = this.state;
     
     return (
       <View style={styles.menu}>
         <SearchBar
           onChangeText={this.onChangeSearch}
           onSubmitEditing={this.onSearch}
-          text={this.state.text}
+          text={text}
           autoFocus={searchParams.autoFocus}
           onEndEditing={this.onEndEditing}
           onFocus={this.onFocus}
-          icon={this.state.icon}
+          icon={icon}
           iconPress={this.iconPress}
         />
         <View style={styles.container}>
@@ -218,16 +256,18 @@ class SearchMenu extends Component {
 
         <FiltersModal
           setModalVisible={this.setFiltersModalVisible}
-          isVisible={this.state.filtersModal}
+          isVisible={filtersModal}
           setPrice={this.setPriceFilter}
           setTime={this.setTimeFilter}
           setSortBy={this.setSortBy}
+          filters={filters}
         />
 
         <PriceModal
           setModalVisible={this.setPriceModalVisible}
-          isVisible={this.state.priceModal}
+          isVisible={priceModal}
           setPrice={this.setPrice}
+          current={filters.orderBy.price}
         />
       </View>
     );
