@@ -7,14 +7,18 @@ import DateTimePicker from "react-native-modal-datetime-picker";
 
 import {SearchBar} from "../SearchBar";
 import {FilterButton} from '../Buttons';
-import {PriceModal, FiltersModal} from "../Modals";
+import {PriceModal, FiltersModal, PlaceModal} from "../Modals";
 
 
 class SearchMenu extends Component {
   
   state = {
     text: '',
-    position: 'unknown',
+    position: {
+      latitude: null,
+      longitude: null,
+    },
+    location: 'New York',
     icon: 'search',
     filters: {
       sortBy: 'best_match',
@@ -29,16 +33,10 @@ class SearchMenu extends Component {
     isPriceModalVisible: false,
     isFiltersModalVisible: false,
     isDateTimePickerVisible: false,
+    isPlaceModalVisible: false,
   };
 
   componentDidMount() {
-    navigator.geolocation.getCurrentPosition((position) => {
-        this.setState({position});
-      },
-      (error) => { console.log(error); },
-      { enableHighAccuracy: true, timeout: 30000 }
-    );
-
     const { text } = this.props.searchParams;
 
     if(text) {
@@ -47,8 +45,6 @@ class SearchMenu extends Component {
       this.fetchData();
     }
   }
-  
-  pressNear = () => this.iconPress();
 
   onSearch = (text) => {
     this.setState({text});
@@ -149,23 +145,33 @@ class SearchMenu extends Component {
 
   setDateTimePickerVisible = (visible) => this.setState({ isDateTimePickerVisible: visible });
 
+  setPlaceModalVisible = (visible) => this.setState({ isPlaceModalVisible: visible });
+  setLocation = (location) => this.setState({location});
+
+  setPosition = () => {
+    let {position} = this.state;
+    navigator.geolocation.getCurrentPosition((geolocation) => {
+        position = geolocation.coords;
+        this.setState({position});
+      },
+      (error) => { console.log(error); },
+      { enableHighAccuracy: true, timeout: 30000 }
+    );
+  };
+
   fetchData = () => {
-    // const lat = this.state.position.coords.latitude || 0;
-    // const lng = this.state.position.coords.longitude || 0;
-    const lat = 0;
-    const lng = 0;
     const consumerKey = "aHkQvkO2mknb811VggwSodBjwyIVF65zfFq463PF9sxC088KEo8DfIkAGth0Pvwt4SnsBS7wMvnB16hJxB0b4m-c1qs5A36awFVek6CBG6c6Mz9tzKsGMDRFvh6aXHYx";
-    const location = 'New York';
+    const {latitude, longitude} = this.state.position;
     const {orderBy, sortBy} = this.state.filters;
-    const {text} = this.state;
+    const {text, location} = this.state;
     const {setFetching} = this.props;
 
     setFetching(true);
 
     let params = '';
 
-    if(lat !== 0 && lng !== 0) {
-      params += `latitude=${lat}&longitude=${lng}`
+    if(latitude != null && longitude != null) {
+      params += `latitude=${latitude}&longitude=${longitude}`
     } else if(location) {
       params += `location=${location}`
     }
@@ -222,7 +228,16 @@ class SearchMenu extends Component {
     });
 
     const {searchParams, primaryColor} = this.props;
-    const {text, icon, isFiltersModalVisible, filters, isPriceModalVisible, isDateTimePickerVisible} = this.state;
+    const {
+      text,
+      icon,
+      isFiltersModalVisible,
+      filters,
+      isPriceModalVisible,
+      isDateTimePickerVisible,
+      isPlaceModalVisible,
+      location
+    } = this.state;
     
     return (
       <View style={styles.menu}>
@@ -237,7 +252,7 @@ class SearchMenu extends Component {
           iconPress={this.iconPress}
         />
         <View style={styles.container}>
-          <FilterButton text={'Near me'} icon={'compass'} onPress={this.pressNear} />
+          <FilterButton text={'Near me'} icon={'compass'} onPress={() => this.setPlaceModalVisible(true)} />
           <Icon name="map" size={30} color='white' />
         </View>
         <View style={styles.hairline} />
@@ -265,6 +280,15 @@ class SearchMenu extends Component {
           setPrice={this.setPrice}
           current={filters.orderBy.price}
           backgroundColor={primaryColor}
+        />
+
+        <PlaceModal
+          setPlaceModalVisible={this.setPlaceModalVisible}
+          isVisible={isPlaceModalVisible}
+          city={location}
+          onSubmitEditing={this.setLocation}
+          backgroundColor={primaryColor}
+          setPosition={this.setPosition}
         />
 
         <DateTimePicker
