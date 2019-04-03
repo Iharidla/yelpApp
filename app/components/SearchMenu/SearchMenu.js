@@ -3,10 +3,12 @@ import PropTypes from 'prop-types';
 import {StyleSheet, View} from 'react-native';
 import { connect } from "react-redux";
 import Icon from 'react-native-ionicons';
+import DateTimePicker from "react-native-modal-datetime-picker";
 
 import {SearchBar} from "../SearchBar";
 import {FilterButton} from '../Buttons';
 import {PriceModal, FiltersModal} from "../Modals";
+
 
 class SearchMenu extends Component {
   
@@ -24,8 +26,9 @@ class SearchMenu extends Component {
         }
       },
     },
-    priceModal: false,
-    filtersModal: false,
+    isPriceModalVisible: false,
+    isFiltersModalVisible: false,
+    isDateTimePickerVisible: false,
   };
 
   componentDidMount() {
@@ -37,27 +40,22 @@ class SearchMenu extends Component {
     );
 
     const { text } = this.props.searchParams;
-    if(text != '') {
+
+    if(text) {
       this.setState({icon: 'arrow-round-back'});
-      this.onSearch(text);
+      this.setState({text});
+      this.fetchData();
     }
   }
   
-  pressNear = () => {
-    console.log("near me pressed");
-    this.iconPress();
-  };
+  pressNear = () => this.iconPress();
 
   onSearch = (text) => {
-    console.log(`search text: ${text}`);
     this.setState({text});
     this.fetchData();
   };
 
-  onChangeSearch = (text) => {
-    this.setState({text});
-    console.log(`typed text: ${text}`);
-  };
+  onChangeSearch = (text) => this.setState({text});
 
   onEndEditing = () => {
     const {text} = this.state;
@@ -66,7 +64,6 @@ class SearchMenu extends Component {
     } else {
       this.setState({icon: 'search'});
     }
-    console.log(`onEndEditing`);
   };
 
   onFocus = () => {
@@ -88,18 +85,14 @@ class SearchMenu extends Component {
     }
   };
 
-  setPriceModalVisible = (visible) => {
-    this.setState({priceModal: visible});
-  };
+  setPriceModalVisible = (visible) => this.setState({isPriceModalVisible: visible});
 
   setPrice = (price) => {
     this.setPriceFilter(price)
     this.setPriceModalVisible(false);
   };
 
-  setFiltersModalVisible = (visible) => {
-    this.setState({filtersModal: visible});
-  };
+  setFiltersModalVisible = (visible) => this.setState({isFiltersModalVisible: visible});
   
   setPriceFilter = (price) => {
     let filters = {...this.state.filters};
@@ -122,7 +115,20 @@ class SearchMenu extends Component {
       filters.orderBy.time.title = '';
     } else {
       filters.orderBy.time.title = title;
+      filters.orderBy.time.at = null;
     }
+
+    this.setState({filters});
+    this.fetchData();
+  };
+
+  setTimeAt = (date) => {
+    const title = 'open_at';
+    const time = date.valueOf()/1000;
+    let filters = {...this.state.filters};
+
+    filters.orderBy.time.title = title;
+    filters.orderBy.time.at = time;
 
     this.setState({filters});
     this.fetchData();
@@ -141,6 +147,8 @@ class SearchMenu extends Component {
     this.fetchData();
   };
 
+  setDateTimePickerVisible = (visible) => this.setState({ isDateTimePickerVisible: visible });
+
   fetchData = () => {
     // const lat = this.state.position.coords.latitude || 0;
     // const lng = this.state.position.coords.longitude || 0;
@@ -148,10 +156,11 @@ class SearchMenu extends Component {
     const lng = 0;
     const consumerKey = "aHkQvkO2mknb811VggwSodBjwyIVF65zfFq463PF9sxC088KEo8DfIkAGth0Pvwt4SnsBS7wMvnB16hJxB0b4m-c1qs5A36awFVek6CBG6c6Mz9tzKsGMDRFvh6aXHYx";
     const location = 'New York';
-    // // const term = 'coffee';
-    //
     const {orderBy, sortBy} = this.state.filters;
     const {text} = this.state;
+    const {setFetching} = this.props;
+
+    setFetching(true);
 
     let params = '';
 
@@ -175,8 +184,6 @@ class SearchMenu extends Component {
       params += `&open_now=true`
     }
 
-    console.log(`params: ${params}`);
-
     const resp = fetch(`https://api.yelp.com/v3/businesses/search?${params}`, {
       method: 'GET',
       headers: {
@@ -189,9 +196,9 @@ class SearchMenu extends Component {
       return res.json();
     }).then((obj) => {
       this.props.setBusinesses(obj.businesses);
+    }).then( (obj)=>{
+      setFetching(false);
     });
-    console.log('resp');
-    console.log(JSON.stringify(resp));
   };
  
   render() {
@@ -215,10 +222,7 @@ class SearchMenu extends Component {
     });
 
     const {searchParams, primaryColor} = this.props;
-
-    const {text, icon, filtersModal, filters, priceModal} = this.state;
-
-    console.log(`filters: ${JSON.stringify(filters)}`);
+    const {text, icon, isFiltersModalVisible, filters, isPriceModalVisible, isDateTimePickerVisible} = this.state;
     
     return (
       <View style={styles.menu}>
@@ -245,21 +249,29 @@ class SearchMenu extends Component {
 
         <FiltersModal
           setModalVisible={this.setFiltersModalVisible}
-          isVisible={filtersModal}
+          isVisible={isFiltersModalVisible}
           setPrice={this.setPriceFilter}
           setTime={this.setTimeFilter}
           setSortBy={this.setSortBy}
           filters={filters}
           setTimeNow={this.setTimeNow}
           backgroundColor={primaryColor}
+          openDateTimePicker={this.setDateTimePickerVisible}
         />
 
         <PriceModal
           setModalVisible={this.setPriceModalVisible}
-          isVisible={priceModal}
+          isVisible={isPriceModalVisible}
           setPrice={this.setPrice}
           current={filters.orderBy.price}
           backgroundColor={primaryColor}
+        />
+
+        <DateTimePicker
+          isVisible={isDateTimePickerVisible}
+          onConfirm={(date) => this.setTimeAt(date)}
+          onCancel={() => this.setDateTimePickerVisible(false)}
+          mode='datetime'
         />
       </View>
     );

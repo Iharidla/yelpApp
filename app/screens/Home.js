@@ -44,8 +44,6 @@ class Home extends Component {
   };
 
   categorySearch = (text, value) => {
-    console.log(`category value: ${value}`);
-    // this.setState({text: text});
     const { navigation } = this.props;
     const searchParams = {
       text: value

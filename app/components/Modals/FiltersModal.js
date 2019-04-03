@@ -2,12 +2,13 @@ import React from 'react';
 import {Text, TouchableHighlight, View} from 'react-native';
 import Modal from "react-native-modal";
 import Icon from 'react-native-ionicons';
+
 import {FilterList} from "../FilterList";
 
 const data=[{value: 1, text: '$'}, {value: 2, text: '$$'}, {value: 3, text: '$$$'}, {value: 4, text: '$$$$'}];
 const sortTitles=[{value: 'best_match', text: 'Best Match'}, {value: 'rating', text: 'Rating'}, {value: 'distance', text: 'Distance'}];
 
-const FiltersModal = ({setModalVisible, isVisible, setPrice, setTimeNow, setTimeAt, setSortBy, filters, backgroundColor}) => (
+const FiltersModal = ({setModalVisible, isVisible, setPrice, setTimeNow, setSortBy, filters, backgroundColor, openDateTimePicker}) => (
   <Modal
     isVisible={isVisible}
     onBackdropPress={() => setModalVisible(false)}
@@ -58,8 +59,7 @@ const FiltersModal = ({setModalVisible, isVisible, setPrice, setTimeNow, setTime
                 </Text>
               </TouchableHighlight>
               <TouchableHighlight
-                // !!! add onPress
-                // onPress={() => setSortBy('open_at')}
+                onPress={() => openDateTimePicker()}
                 underlayColor={'#dcdcdc'}
                 style={[{
                   width: '50%',
