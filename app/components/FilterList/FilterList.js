@@ -2,7 +2,7 @@ import React from "react";
 import {Text, TouchableHighlight, View} from "react-native";
 
 const FilterList = ({data, onPress, current}) => (
-  <View style={{ paddingBottom: 5, paddingTop: 5, backgroundColor: 'white', marginBottom: 5, borderRadius: 20 }}>
+  <View style={{ paddingBottom: 5, paddingTop: 5, backgroundColor: 'white', borderRadius: 20 }}>
     <View style={{flexDirection: 'row', alignItems: 'center', marginLeft: 5, marginRight: 5}}>
       {
         data.map((item) => (

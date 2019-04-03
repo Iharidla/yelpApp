@@ -214,9 +214,11 @@ class SearchMenu extends Component {
       }
     });
 
-    const {searchParams} = this.props;
+    const {searchParams, primaryColor} = this.props;
 
     const {text, icon, filtersModal, filters, priceModal} = this.state;
+
+    console.log(`primary color: ${primaryColor}`)
     
     return (
       <View style={styles.menu}>
@@ -249,6 +251,7 @@ class SearchMenu extends Component {
           setSortBy={this.setSortBy}
           filters={filters}
           setTimeNow={this.setTimeNow}
+          backgroundColor={primaryColor}
         />
 
         <PriceModal
@@ -256,10 +259,18 @@ class SearchMenu extends Component {
           isVisible={priceModal}
           setPrice={this.setPrice}
           current={filters.orderBy.price}
+          backgroundColor={primaryColor}
         />
       </View>
     );
   }
 }
 
-export default connect()(SearchMenu);
+const mapStateToProps = (state) => {
+  return {
+    primaryColor: state.theme.primaryColor,
+    currencyError: state.currencies.error,
+  };
+};
+
+export default connect(mapStateToProps)(SearchMenu);

@@ -34,11 +34,11 @@ class Businesses extends Component {
 
     let check = this.state.businesses.length != 0;
     
-    const { navigation } = this.props;
+    const { navigation, primaryColor } = this.props;
     const searchParams = navigation.getParam('searchParams', {});
     
     return (
-      <Container backgroundColor={this.props.primaryColor}>
+      <Container backgroundColor={primaryColor}>
         <SearchMenu
           backgroundColor={this.props.primaryColor}
           setBusinesses={this.setBusinesses}
