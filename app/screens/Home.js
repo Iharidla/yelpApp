@@ -84,7 +84,7 @@ class Home extends Component {
             />
             <FlatList
               data={ this.props.categories }
-              keyExtractor={(item) => item.index}
+              keyExtractor={(item) => item.text}
               removeClippedSubviews={false}
               renderItem={ ({item, index}) =>
                 <CategoryItem item={item} index={index} onPress={() => this.categorySearch(item.text, item.value)} />
