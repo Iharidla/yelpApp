@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, TouchableOpacity, FlatList } from 'react-native';
+import { View, ActivityIndicator, FlatList } from 'react-native';
 import { connect } from "react-redux";
 import {Business} from "../components/Businesses";
 import {Separator} from "../components/List";
@@ -15,6 +15,7 @@ class Businesses extends Component {
 
   state = {
     businesses: [],
+    isFetching: true,
   };
 
   setBusinesses = (businesses) => {
@@ -28,6 +29,8 @@ class Businesses extends Component {
     navigation.goBack(null);
   };
 
+  setFetching = (isFetching) => this.setState({isFetching});
+
   render() {
     console.log('output');
     console.log(this.state.businesses);
@@ -36,7 +39,7 @@ class Businesses extends Component {
     
     const { navigation, primaryColor } = this.props;
     const searchParams = navigation.getParam('searchParams', {});
-    
+    const { isFetching } = this.state;
     return (
       <Container backgroundColor={primaryColor}>
         <SearchMenu
@@ -44,25 +47,31 @@ class Businesses extends Component {
           setBusinesses={this.setBusinesses}
           searchParams={searchParams}
           goBack={this.goBack}
+          setFetching={this.setFetching}
         />
-        <View style={{backgroundColor: 'white'}}>
-          { check ? <FlatList
-            data={this.state.businesses}
-            renderItem={({ item }) => (
-              <Business
-                name={item.name}
-                url={item.url}
-                image_url={item.image_url}
-                categories={item.categories}
-                address={item.location.address1}
-                phone={item.display_phone}
-                price={item.price}
-                rating={item.rating}
-              />
-            )}
-            keyExtractor={item => item.id}
-            ItemSeparatorComponent={Separator}
-          /> : null }
+        <View style={{backgroundColor: 'white', height: '100%', justifyContent: 'center'}}>
+          {isFetching
+            ?
+            <ActivityIndicator size="large" color={this.props.primaryColor} />
+            :
+            <FlatList
+              data={this.state.businesses}
+              renderItem={({ item }) => (
+                <Business
+                  name={item.name}
+                  url={item.url}
+                  image_url={item.image_url}
+                  categories={item.categories}
+                  address={item.location.address1}
+                  phone={item.display_phone}
+                  price={item.price}
+                  rating={item.rating}
+                />
+              )}
+              keyExtractor={item => item.id}
+              ItemSeparatorComponent={Separator}
+            />
+          }
         </View>
       </Container>
     );
