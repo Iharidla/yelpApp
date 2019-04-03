@@ -71,9 +71,10 @@ class Home extends Component {
         width: Dimensions.get('window').width,
       }
     });
+    const {primaryColor} = this.props;
     return (
-      <Container backgroundColor={this.props.primaryColor}>
-        <StatusBar translucent={false} barStyle="light-content" backgroundColor='#4F6D7A' />
+      <Container backgroundColor={primaryColor}>
+        <StatusBar translucent={false} barStyle="light-content" backgroundColor={primaryColor} />
         <Header onPress={this.handleOptionsPress} />
         <View style={styles.container}>
           <Logo />

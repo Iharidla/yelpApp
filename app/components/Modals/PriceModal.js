@@ -5,7 +5,7 @@ import {FilterList} from "../FilterList";
 
 const data=[{value: 1, text: '$'}, {value: 2, text: '$$'}, {value: 3, text: '$$$'}, {value: 4, text: '$$$$'}];
 
-const PriceModal = ({setModalVisible, isVisible, setPrice, current}) => (
+const PriceModal = ({setModalVisible, isVisible, setPrice, current, backgroundColor}) => (
   <Modal
     isVisible={isVisible}
     onBackdropPress={() => setModalVisible(false)}
@@ -13,7 +13,7 @@ const PriceModal = ({setModalVisible, isVisible, setPrice, current}) => (
     swipeDirection="up"
   >
     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-      <View style={{ backgroundColor: '#4F6D7A', alignItems: 'center', padding: 20, borderRadius: 20, justifyContent: 'space-between'}}>
+      <View style={{ backgroundColor: backgroundColor, alignItems: 'center', padding: 20, borderRadius: 20, justifyContent: 'space-between'}}>
         <FilterList data={data} onPress={setPrice} current={current}/>
       </View>
     </View>
