@@ -1,14 +1,13 @@
 import React from 'react';
-import {Text, TouchableHighlight, View, FlatList} from 'react-native';
+import {Text, TouchableHighlight, View} from 'react-native';
 import Modal from "react-native-modal";
 import Icon from 'react-native-ionicons';
 import {FilterList} from "../FilterList";
 
 const data=[{value: 1, text: '$'}, {value: 2, text: '$$'}, {value: 3, text: '$$$'}, {value: 4, text: '$$$$'}];
 const sortTitles=[{value: 'best_match', text: 'Best Match'}, {value: 'rating', text: 'Rating'}, {value: 'distance', text: 'Distance'}];
-const time=['Open Now', "Open At"];
 
-const FiltersModal = ({setModalVisible, isVisible, setPrice, setTime, setSortBy, filters}) => (
+const FiltersModal = ({setModalVisible, isVisible, setPrice, setTimeNow, setTimeAt, setSortBy, filters}) => (
   <Modal
     isVisible={isVisible}
     onBackdropPress={() => setModalVisible(false)}
@@ -33,25 +32,57 @@ const FiltersModal = ({setModalVisible, isVisible, setPrice, setTime, setSortBy,
           <FilterList data={data} onPress={setPrice} current={filters.orderBy.price}/>
           <View style={{ paddingBottom: 5, paddingTop: 5, backgroundColor: 'white', marginBottom: 5, borderRadius: 20 }}>
             <View style={{flexDirection: 'row', alignItems: 'center', marginLeft: 5, marginRight: 5}}>
-              {
-                time.map((item) => (
-                  <TouchableHighlight
-                    onPress={() => setTime(item)}
-                    underlayColor={'#dcdcdc'}
-                    style={{
-                      width: `${100/time.length}%`,
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      borderColor: '#747474',
-                      borderRadius: 8,
-                      borderRightWidth: 2,
-                      borderLeftWidth: 2,
-                    }}>
-                    <Text>{item}</Text>
-                  </TouchableHighlight>
-                ))
-              }
+             <TouchableHighlight
+                onPress={() => setTimeNow()}
+                underlayColor={'#dcdcdc'}
+                style={[{
+                  width: '50%',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderRadius: 8,
+                  borderRightWidth: 2,
+                  borderLeftWidth: 2,
+                  borderColor: '#747474',
+                },
+                  filters.orderBy.time.title=='open_now' ? {
+                    backgroundColor: '#747474',
+                  } : {
+                    backgroundColor: "white",
+                  }
+                ]}>
+                <Text
+                  style={[filters.orderBy.time.title=='open_now' ? { color: 'white' } : { color: '#747474' }]}
+                >
+                  Open Now
+                </Text>
+              </TouchableHighlight>
+              <TouchableHighlight
+                // !!! add onPress
+                // onPress={() => setSortBy('open_at')}
+                underlayColor={'#dcdcdc'}
+                style={[{
+                  width: '50%',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderRadius: 8,
+                  borderRightWidth: 2,
+                  borderLeftWidth: 2,
+                  borderColor: '#747474',
+                },
+                  filters.orderBy.time.title=='open_at' ? {
+                    backgroundColor: '#747474',
+                  } : {
+                    backgroundColor: "white",
+                  }
+                ]}>
+                <Text
+                  style={[filters.orderBy.time.title=='open_at' ? { color: 'white' } : { color: '#747474' }]}
+                >
+                  Open At
+                </Text>
+              </TouchableHighlight>
             </View>
           </View>
         </View>
