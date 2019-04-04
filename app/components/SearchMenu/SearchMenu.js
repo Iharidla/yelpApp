@@ -18,7 +18,7 @@ class SearchMenu extends Component {
       latitude: null,
       longitude: null,
     },
-    location: 'New York',
+    location: '',
     icon: 'search',
     filters: {
       sortBy: 'best_match',
@@ -36,15 +36,21 @@ class SearchMenu extends Component {
     isPlaceModalVisible: false,
   };
 
-  componentDidMount() {
+  componentDidMount = () => {
     const { text } = this.props.searchParams;
-
-    if(text) {
-      this.setState({icon: 'arrow-round-back'});
-      this.setState({text});
-      this.fetchData();
-    }
-  }
+    let {position} = this.state;
+    navigator.geolocation.getCurrentPosition((geolocation) => {
+        position = geolocation.coords;
+        this.setState({position});
+        if(text) {
+          this.setState({icon: 'arrow-round-back'});
+          this.onSearch(text);
+        }
+      },
+      (error) => { console.log(error); },
+      { enableHighAccuracy: true, timeout: 30000 }
+    );
+  };
 
   onSearch = (text) => {
     this.setState({text});
@@ -146,17 +152,30 @@ class SearchMenu extends Component {
   setDateTimePickerVisible = (visible) => this.setState({ isDateTimePickerVisible: visible });
 
   setPlaceModalVisible = (visible) => this.setState({ isPlaceModalVisible: visible });
-  setLocation = (location) => this.setState({location});
+
+  setLocation = (location) => {
+    this.setState({location});
+    this.fetchData();
+  };
+
+  handlePosition = () => {
+    this.setPosition();
+    this.fetchData();
+  };
 
   setPosition = () => {
     let {position} = this.state;
     navigator.geolocation.getCurrentPosition((geolocation) => {
+        console.log(`coord:`);
+        console.log(geolocation);
         position = geolocation.coords;
         this.setState({position});
       },
       (error) => { console.log(error); },
       { enableHighAccuracy: true, timeout: 30000 }
     );
+    console.log('position');
+    console.log(this.state.position)
   };
 
   fetchData = () => {
@@ -167,6 +186,8 @@ class SearchMenu extends Component {
     const {setFetching} = this.props;
 
     setFetching(true);
+
+    console.log(`ren fetch, long: ${longitude}`);
 
     let params = '';
 
@@ -190,6 +211,8 @@ class SearchMenu extends Component {
       params += `&open_now=true`
     }
 
+    console.log(`params ${params}`);
+
     const resp = fetch(`https://api.yelp.com/v3/businesses/search?${params}`, {
       method: 'GET',
       headers: {
@@ -198,7 +221,6 @@ class SearchMenu extends Component {
         'Content-Type': 'application/json',
       },
     }).then((res) => {
-      console.log(res);
       return res.json();
     }).then((obj) => {
       this.props.setBusinesses(obj.businesses);
@@ -252,7 +274,7 @@ class SearchMenu extends Component {
           iconPress={this.iconPress}
         />
         <View style={styles.container}>
-          <FilterButton text={'Near me'} icon={'compass'} onPress={() => this.setPlaceModalVisible(true)} />
+          <FilterButton text={'Location'} icon={'compass'} onPress={() => this.setPlaceModalVisible(true)} />
           <Icon name="map" size={30} color='white' />
         </View>
         <View style={styles.hairline} />
@@ -288,7 +310,7 @@ class SearchMenu extends Component {
           city={location}
           onSubmitEditing={this.setLocation}
           backgroundColor={primaryColor}
-          setPosition={this.setPosition}
+          setPosition={this.handlePosition}
         />
 
         <DateTimePicker
