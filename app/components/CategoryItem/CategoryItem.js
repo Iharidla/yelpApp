@@ -2,6 +2,8 @@ import React from 'react';
 import {StyleSheet, Text, TouchableOpacity} from 'react-native';
 import Icon from "react-native-ionicons";
 
+import styles from './styles';
+
 const ICON_COLOR = 'white';
 const ICON_SIZE = 50;
 
@@ -14,22 +16,5 @@ const CategoryItem = ({item, onPress}) => (
     <Text style={styles.GridViewTextLayout}>{item.text}</Text>
   </TouchableOpacity>
 );
-
-
-const styles = StyleSheet.create({
-  GridViewTextLayout:{
-    fontSize: 20,
-    textAlign: 'center',
-    color: 'white',
-  },
-  GridViewContainer:{
-    flex:1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: 100,
-    width: 30,
-    margin: 5,
-  }
-});
 
 export default CategoryItem;

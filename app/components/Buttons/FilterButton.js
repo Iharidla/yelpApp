@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {TouchableOpacity, View, Text, StyleSheet} from 'react-native';
 import Icon from 'react-native-ionicons';
 
-// import styles from './styles';
+import styles from './styles';
 
 const FilterButton = ({ text, icon, onPress }) => (
   <TouchableOpacity onPress={onPress}>
@@ -13,18 +13,6 @@ const FilterButton = ({ text, icon, onPress }) => (
     </View>
   </TouchableOpacity>
 );
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
-  },
-  text: {
-    paddingLeft: 5,
-    color: 'white',
-  }
-});
 
 FilterButton.propTypes = {
   text: PropTypes.string,
