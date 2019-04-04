@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import {View, TextInput, StyleSheet} from 'react-native';
+import {View, TextInput} from 'react-native';
 import Modal from "react-native-modal";
-
-import {FilterButton} from "../Buttons";
 import Icon from "react-native-ionicons";
 
+import { FilterButton } from "../Buttons";
+
+import styles from "./styles";
 
 class PlaceModal extends Component {
   state = {
@@ -38,26 +39,17 @@ class PlaceModal extends Component {
         onSwipeComplete={() => setPlaceModalVisible(false)}
         swipeDirection="up"
       >
-        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-          <View style={{ backgroundColor: backgroundColor, alignItems: 'center', padding: 20, borderRadius: 20, justifyContent: 'space-between'}}>
-            <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 10}}>
+        <View style={styles.container}>
+          <View style={[styles.roundContainer, { backgroundColor: backgroundColor, }]}>
+            <View style={styles.placeContainer}>
               <Icon
                 name='compass'
                 size={22}
                 color='white'
-                style={{marginRight: 10}}
+                style={styles.placeIcon}
               />
               <TextInput
-                style={{
-                  backgroundColor: '#fff',
-                  borderRadius: 10,
-                  height: 30,
-                  width: 150,
-                  paddingLeft: 10,
-                  paddingRight: 10,
-                  paddingBottom: 0,
-                  paddingTop: 0,
-                }}
+                style={styles.textInput}
                 textContentType='addressCity'
                 placeholder={city}
                 placeholderTextColor={'#999'}

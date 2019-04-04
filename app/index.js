@@ -17,6 +17,7 @@ EStyleSheet.build({
   $inputText: '#797979',
   $lightGrey: '#F0F0F0',
   $darkText: '#343434',
+  $underlayColor: '#dcdcdc',
 });
 
 export default () => (
