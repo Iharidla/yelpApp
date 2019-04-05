@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Dimensions, View, TextInput, StyleSheet} from "react-native";
+import {View, TextInput} from "react-native";
 import Icon from "react-native-ionicons";
 
-const width = Dimensions.get('window').width * 0.9;
+import styles from './styles';
 
 const SearchBar = ({ onChangeText, onSubmitEditing, icon='search', onTouchStart, text = '', autoFocus = false, onEndEditing, onFocus, iconPress }) => (
   <View style={styles.searchInput}>
@@ -29,28 +29,6 @@ const SearchBar = ({ onChangeText, onSubmitEditing, icon='search', onTouchStart,
     />
   </View>
 );
-
-const styles = StyleSheet.create({
-  searchInput: {
-    backgroundColor: '#fff',
-    borderRadius: 3,
-    height: 45,
-    marginTop: 3,
-    marginLeft: 10,
-    marginRight: 10,
-    width: width,
-  },
-  searchIcon: {
-    position: 'absolute',
-    left: 13,
-    top: 12,
-  },
-  inputText: {
-    marginLeft: 43,
-    fontSize: 15,
-    color: '#999',
-  },
-});
 
 SearchBar.propTypes = {
   text: PropTypes.string,
