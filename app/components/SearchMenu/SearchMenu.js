@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {StyleSheet, View} from 'react-native';
+import {View} from 'react-native';
 import { connect } from "react-redux";
 import Icon from 'react-native-ionicons';
 import DateTimePicker from "react-native-modal-datetime-picker";
@@ -8,6 +8,8 @@ import DateTimePicker from "react-native-modal-datetime-picker";
 import {SearchBar} from "../SearchBar";
 import {FilterButton} from '../Buttons';
 import {PriceModal, FiltersModal, PlaceModal} from "../Modals";
+
+import styles from './styles';
 
 
 class SearchMenu extends Component {
@@ -230,25 +232,6 @@ class SearchMenu extends Component {
   };
  
   render() {
-    const styles = StyleSheet.create({
-      container: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        margin: 10,
-        width: '80%',
-        alignItems: 'center',
-      },
-      hairline: {
-        backgroundColor: 'white',
-        height: 1,
-        width: '90%',
-      },
-      menu: {
-        marginTop: 15,
-        alignItems: 'center',
-      }
-    });
-
     const {searchParams, primaryColor} = this.props;
     const {
       text,
