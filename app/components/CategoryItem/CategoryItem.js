@@ -1,5 +1,6 @@
 import React from 'react';
-import {StyleSheet, Text, TouchableOpacity} from 'react-native';
+import PropTypes from "prop-types";
+import {Text, TouchableOpacity} from 'react-native';
 import Icon from "react-native-ionicons";
 
 import styles from './styles';
@@ -16,5 +17,10 @@ const CategoryItem = ({item, onPress}) => (
     <Text style={styles.GridViewTextLayout}>{item.text}</Text>
   </TouchableOpacity>
 );
+
+CategoryItem.propTypes = {
+  item: PropTypes.object,
+  onPress: PropTypes.func,
+};
 
 export default CategoryItem;

@@ -1,5 +1,8 @@
 import React from 'react';
+import PropTypes from "prop-types";
 import {Text, View, Image, Linking, TouchableOpacity} from 'react-native';
+
+import FilterButton from "../Buttons/FilterButton";
 
 import styles from "./styles";
 
@@ -26,6 +29,17 @@ const Business = ({name, url, image_url, categories, address, phone,  price, rat
       </View>
     </TouchableOpacity>
   );
+};
+
+FilterButton.propTypes = {
+  name: PropTypes.string,
+  url: PropTypes.string,
+  image_url: PropTypes.string,
+  categories: PropTypes.array,
+  address: PropTypes.string,
+  phone: PropTypes.string,
+  price: PropTypes.string,
+  rating: PropTypes.string,
 };
 
 export default Business;

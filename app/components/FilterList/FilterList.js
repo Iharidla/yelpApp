@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import {Text, TouchableHighlight, View} from "react-native";
 
 import styles from "./styles";
@@ -31,5 +32,14 @@ const FilterList = ({data, onPress, current}) => (
     </View>
   </View>
 );
+
+FilterList.propTypes = {
+  data: PropTypes.array,
+  onPress: PropTypes.func,
+  current: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number
+  ]),
+};
 
 export default FilterList;

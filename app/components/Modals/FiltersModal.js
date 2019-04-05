@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from "prop-types";
 import {Text, TouchableHighlight, View} from 'react-native';
 import Modal from "react-native-modal";
 import Icon from 'react-native-ionicons';
@@ -83,5 +84,16 @@ const FiltersModal = ({setModalVisible, isVisible, setPrice, setTimeNow, setSort
     </View>
   </Modal>
 );
+
+FiltersModal.propTypes = {
+  setModalVisible: PropTypes.func,
+  isVisible: PropTypes.bool,
+  setPrice: PropTypes.func,
+  setTimeNow: PropTypes.func,
+  setSortBy: PropTypes.func,
+  filters: PropTypes.object,
+  backgroundColor: PropTypes.string,
+  openDateTimePicker: PropTypes.func,
+};
 
 export default FiltersModal;

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {View} from 'react-native';
-import { connect } from "react-redux";
 import Icon from 'react-native-ionicons';
 import DateTimePicker from "react-native-modal-datetime-picker";
 
@@ -13,6 +12,13 @@ import styles from './styles';
 
 
 class SearchMenu extends Component {
+  static propTypes = {
+    setBusinesses: PropTypes.func,
+    goBack: PropTypes.func,
+    searchParams: PropTypes.object,
+    backgroundColor: PropTypes.string,
+    setFetching: PropTypes.func,
+  };
   
   state = {
     text: '',
@@ -176,8 +182,6 @@ class SearchMenu extends Component {
       (error) => { console.log(error); },
       { enableHighAccuracy: true, timeout: 30000 }
     );
-    console.log('position');
-    console.log(this.state.position)
   };
 
   fetchData = () => {
@@ -232,7 +236,7 @@ class SearchMenu extends Component {
   };
  
   render() {
-    const {searchParams, primaryColor} = this.props;
+    const {searchParams, backgroundColor} = this.props;
     const {
       text,
       icon,
@@ -271,11 +275,10 @@ class SearchMenu extends Component {
           setModalVisible={this.setFiltersModalVisible}
           isVisible={isFiltersModalVisible}
           setPrice={this.setPriceFilter}
-          setTime={this.setTimeFilter}
           setSortBy={this.setSortBy}
           filters={filters}
           setTimeNow={this.setTimeNow}
-          backgroundColor={primaryColor}
+          backgroundColor={backgroundColor}
           openDateTimePicker={this.setDateTimePickerVisible}
         />
 
@@ -284,7 +287,7 @@ class SearchMenu extends Component {
           isVisible={isPriceModalVisible}
           setPrice={this.setPrice}
           current={filters.orderBy.price}
-          backgroundColor={primaryColor}
+          backgroundColor={backgroundColor}
         />
 
         <PlaceModal
@@ -292,7 +295,7 @@ class SearchMenu extends Component {
           isVisible={isPlaceModalVisible}
           city={location}
           onSubmitEditing={this.setLocation}
-          backgroundColor={primaryColor}
+          backgroundColor={backgroundColor}
           setPosition={this.handlePosition}
         />
 
@@ -307,11 +310,4 @@ class SearchMenu extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    primaryColor: state.theme.primaryColor,
-    currencyError: state.currencies.error,
-  };
-};
-
-export default connect(mapStateToProps)(SearchMenu);
+export default SearchMenu;

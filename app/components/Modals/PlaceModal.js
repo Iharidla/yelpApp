@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from "prop-types";
 import {View, TextInput} from 'react-native';
 import Modal from "react-native-modal";
 import Icon from "react-native-ionicons";
@@ -8,6 +9,14 @@ import { FilterButton } from "../Buttons";
 import styles from "./styles";
 
 class PlaceModal extends Component {
+  static propTypes = {
+    setPlaceModalVisible: PropTypes.func,
+    isVisible: PropTypes.bool,
+    setPosition: PropTypes.func,
+    city: PropTypes.string,
+    backgroundColor: PropTypes.string,
+  };
+
   state = {
     text: '',
   };
@@ -23,8 +32,14 @@ class PlaceModal extends Component {
     onSubmitEditing(text);
   };
 
+  setPosition = () => {
+    const {setPlaceModalVisible, setPosition} = this.props;
+    setPlaceModalVisible(false);
+    setPosition();
+  };
+
   render() {
-    const {setPlaceModalVisible, isVisible, backgroundColor, setPosition} = this.props;
+    const {setPlaceModalVisible, isVisible, backgroundColor} = this.props;
 
     let {city} = this.props;
 
@@ -59,7 +74,7 @@ class PlaceModal extends Component {
                 value={this.state.text}
               />
             </View>
-            <FilterButton text={'My current location'} icon={'locate'} onPress={() => setPosition()} />
+            <FilterButton text={'My current location'} icon={'locate'} onPress={() => this.setPosition()} />
           </View>
         </View>
       </Modal>

@@ -11,6 +11,8 @@ class Businesses extends Component {
   static propTypes = {
     navigation: PropTypes.object,
     dispatch: PropTypes.func,
+    primaryColor: PropTypes.string,
+    currencyError: PropTypes.string,
   };
 
   state = {
@@ -18,25 +20,13 @@ class Businesses extends Component {
     isFetching: true,
   };
 
-  setBusinesses = (businesses) => {
-    console.log(...businesses);
-    this.setState({businesses});
-  };
+  setBusinesses = (businesses) => this.setState({businesses});
 
-  goBack = () => {
-    console.log("go back")
-    const {navigation} = this.props;
-    navigation.goBack(null);
-  };
+  goBack = () => this.props.navigation.goBack(null);
 
   setFetching = (isFetching) => this.setState({isFetching});
 
   render() {
-    console.log('output');
-    console.log(this.state.businesses);
-
-    let check = this.state.businesses.length != 0;
-    
     const { navigation, primaryColor } = this.props;
     const searchParams = navigation.getParam('searchParams', {});
     const { isFetching } = this.state;

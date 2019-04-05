@@ -16,15 +16,8 @@ class Home extends Component {
   static propTypes = {
     navigation: PropTypes.object,
     dispatch: PropTypes.func,
-    baseCurrency: PropTypes.string,
-    quoteCurrency: PropTypes.string,
     categories: PropTypes.array,
-    amount: PropTypes.number,
-    conversionRate: PropTypes.number,
-    isFetching: PropTypes.bool,
-    lastCovetedDate: PropTypes.object,
     primaryColor: PropTypes.string,
-    alertWithType: PropTypes.func,
     currencyError: PropTypes.string,
   };
 
@@ -98,18 +91,8 @@ class Home extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { baseCurrency, quoteCurrency } = state.currencies;
-  const conversionSelector = state.currencies.conversions[baseCurrency] || {};
-  const rates = conversionSelector.rates || {};
-
   return {
-    baseCurrency,
-    quoteCurrency,
     categories: state.currencies.categories,
-    amount: state.currencies.amount,
-    conversionRate: rates[quoteCurrency] || 0,
-    isFetching: conversionSelector.isFetching,
-    lastCovetedDate: conversionSelector.date? new Date(conversionSelector.date) : new Date(),
     primaryColor: state.theme.primaryColor,
     currencyError: state.currencies.error,
   };
