@@ -1,33 +1,27 @@
 import React from "react";
 import {Text, TouchableHighlight, View} from "react-native";
 
+import styles from "./styles";
+
 const FilterList = ({data, onPress, current}) => (
-  <View style={{ paddingBottom: 5, paddingTop: 5, backgroundColor: 'white', borderRadius: 20 }}>
-    <View style={{flexDirection: 'row', alignItems: 'center', marginLeft: 5, marginRight: 5}}>
+  <View style={styles.filterListBackground}>
+    <View style={styles.filterListContainer}>
       {
         data.map((item) => (
           <TouchableHighlight
             onPress={() => onPress(item.value)}
             underlayColor={'#dcdcdc'}
             key={item.text}
-            style={[{
-              width: `${100/data.length}%`,
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: 8,
-              borderRightWidth: 2,
-              borderLeftWidth: 2,
-              borderColor: '#747474',
-            },
-            current==item.value ? {
-              backgroundColor: '#747474',
-            } : {
-              backgroundColor: "white",
-            }
-            ]}>
+            style={[
+              styles.listItem,
+              {
+                width: `${100/data.length}%`,
+              },
+              current==item.value ? styles.listItemCheck : styles.listItemUncheck
+            ]}
+          >
             <Text
-              style={[current==item.value ? { color: 'white' } : { color: '#747474' }]}
+              style={[current==item.value ? styles.textCheck  : styles.textUncheck]}
             >
               {item.text}
             </Text>
