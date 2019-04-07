@@ -21,8 +21,8 @@ class Options extends Component {
   };
 
   handleSitePress = () => {
-    Linking.openURL('http://handlebarlabs.com').catch(() =>
-      this.props.alertWithType('error', 'Sorry!', "Fixer.if can't be opened tight mow"),
+    Linking.openURL('http://yelp.com').catch(() =>
+      this.props.alertWithType('error', 'Sorry!', "Yelp can't be opened tight mow"),
     );
   };
 

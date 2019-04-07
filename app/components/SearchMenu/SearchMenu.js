@@ -3,20 +3,21 @@ import PropTypes from 'prop-types';
 import {View} from 'react-native';
 import Icon from 'react-native-ionicons';
 import DateTimePicker from "react-native-modal-datetime-picker";
+import {connect} from "react-redux";
 
 import {SearchBar} from "../SearchBar";
 import {FilterButton} from '../Buttons';
 import {PriceModal, FiltersModal, PlaceModal} from "../Modals";
+import {connectAlert} from "../Alert";
 
 import styles from './styles';
-
 
 class SearchMenu extends Component {
   static propTypes = {
     setBusinesses: PropTypes.func,
     goBack: PropTypes.func,
     searchParams: PropTypes.object,
-    backgroundColor: PropTypes.string,
+    primaryColor: PropTypes.string,
     setFetching: PropTypes.func,
   };
   
@@ -162,6 +163,7 @@ class SearchMenu extends Component {
   setPlaceModalVisible = (visible) => this.setState({ isPlaceModalVisible: visible });
 
   setLocation = (location) => {
+    console.log(`location: ${location}`);
     this.setState({location});
     this.fetchData();
   };
@@ -193,15 +195,18 @@ class SearchMenu extends Component {
 
     setFetching(true);
 
-    console.log(`ren fetch, long: ${longitude}`);
+    console.log(`ren fetch, long: ${location}`);
 
     let params = '';
+    
+    
 
-    if(latitude != null && longitude != null) {
-      params += `latitude=${latitude}&longitude=${longitude}`
-    } else if(location) {
-      params += `location=${location}`
+    if(location) {
+      params += `location=${location}`;
+    } else if(latitude != null && longitude != null) {
+      params += `latitude=${latitude}&longitude=${longitude}`;
     }
+    
     if(text!='') {
       params += `&term=${text}`
     }
@@ -229,6 +234,8 @@ class SearchMenu extends Component {
     }).then((res) => {
       return res.json();
     }).then((obj) => {
+      console.log('Parsed: ');
+      console.log(obj);
       this.props.setBusinesses(obj.businesses);
     }).then( (obj)=>{
       setFetching(false);
@@ -236,7 +243,7 @@ class SearchMenu extends Component {
   };
  
   render() {
-    const {searchParams, backgroundColor} = this.props;
+    const {searchParams, primaryColor} = this.props;
     const {
       text,
       icon,
@@ -278,7 +285,7 @@ class SearchMenu extends Component {
           setSortBy={this.setSortBy}
           filters={filters}
           setTimeNow={this.setTimeNow}
-          backgroundColor={backgroundColor}
+          backgroundColor={primaryColor}
           openDateTimePicker={this.setDateTimePickerVisible}
         />
 
@@ -287,7 +294,7 @@ class SearchMenu extends Component {
           isVisible={isPriceModalVisible}
           setPrice={this.setPrice}
           current={filters.orderBy.price}
-          backgroundColor={backgroundColor}
+          backgroundColor={primaryColor}
         />
 
         <PlaceModal
@@ -295,7 +302,7 @@ class SearchMenu extends Component {
           isVisible={isPlaceModalVisible}
           city={location}
           onSubmitEditing={this.setLocation}
-          backgroundColor={backgroundColor}
+          backgroundColor={primaryColor}
           setPosition={this.handlePosition}
         />
 
@@ -310,4 +317,10 @@ class SearchMenu extends Component {
   }
 }
 
-export default SearchMenu;
+const mapStateToProps = (state) => {
+  return {
+    primaryColor: state.theme.primaryColor,
+  };
+};
+
+export default connect(mapStateToProps)(connectAlert(SearchMenu));

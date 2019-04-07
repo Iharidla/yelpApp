@@ -6,25 +6,19 @@ import { connect } from 'react-redux';
 import { Container } from '../components/Container';
 import { Header } from '../components/Header'
 import { connectAlert } from '../components/Alert';
-
-import {getInitialConversion} from '../actions/currencies';
 import {SearchBar} from "../components/SearchBar";
 import {CategoryItem} from "../components/CategoryItem";
 import {Logo} from "../components/Logo";
+
+import categories from "../data/categories";
 
 class Home extends Component {
   static propTypes = {
     navigation: PropTypes.object,
     dispatch: PropTypes.func,
-    categories: PropTypes.array,
     primaryColor: PropTypes.string,
-    currencyError: PropTypes.string,
   };
-
-  componentDidMount() {
-    this.props.dispatch(getInitialConversion());
-  }
-
+  
   componentWillReceiveProps(nextProps) {
     if (nextProps.currencyError && nextProps.currencyError !== this.props.currencyError) {
       this.props.alertWithType('error', 'Error', nextProps.currencyError);
@@ -74,7 +68,7 @@ class Home extends Component {
               onTouchStart={this.searchPress}
             />
             <FlatList
-              data={ this.props.categories }
+              data={ categories }
               keyExtractor={(item) => item.text}
               removeClippedSubviews={false}
               renderItem={ ({item, index}) =>
@@ -92,10 +86,8 @@ class Home extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    categories: state.currencies.categories,
     primaryColor: state.theme.primaryColor,
-    currencyError: state.currencies.error,
   };
 };
 
-export default connect(mapStateToProps)(connectAlert(Home));
+export default connect(mapStateToProps)(Home);

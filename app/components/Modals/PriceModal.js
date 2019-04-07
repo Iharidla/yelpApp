@@ -6,8 +6,7 @@ import Modal from "react-native-modal";
 import {FilterList} from "../FilterList";
 
 import styles from "./styles";
-
-const data=[{value: 1, text: '$'}, {value: 2, text: '$$'}, {value: 3, text: '$$$'}, {value: 4, text: '$$$$'}];
+import prices from "../../data/prices";
 
 const PriceModal = ({setModalVisible, isVisible, setPrice, current, backgroundColor}) => (
   <Modal
@@ -18,7 +17,7 @@ const PriceModal = ({setModalVisible, isVisible, setPrice, current, backgroundCo
   >
     <View style={styles.container}>
       <View style={[styles.roundContainer, { backgroundColor: backgroundColor, }]}>
-        <FilterList data={data} onPress={setPrice} current={current}/>
+        <FilterList data={prices} onPress={setPrice} current={current}/>
       </View>
     </View>
   </Modal>
