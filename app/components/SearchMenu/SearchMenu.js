@@ -3,20 +3,21 @@ import PropTypes from 'prop-types';
 import {View} from 'react-native';
 import Icon from 'react-native-ionicons';
 import DateTimePicker from "react-native-modal-datetime-picker";
+import {connect} from "react-redux";
 
 import {SearchBar} from "../SearchBar";
 import {FilterButton} from '../Buttons';
 import {PriceModal, FiltersModal, PlaceModal} from "../Modals";
+import {connectAlert} from "../Alert";
 
 import styles from './styles';
-
 
 class SearchMenu extends Component {
   static propTypes = {
     setBusinesses: PropTypes.func,
     goBack: PropTypes.func,
     searchParams: PropTypes.object,
-    backgroundColor: PropTypes.string,
+    primaryColor: PropTypes.string,
     setFetching: PropTypes.func,
   };
   
@@ -26,6 +27,7 @@ class SearchMenu extends Component {
       latitude: null,
       longitude: null,
     },
+    autocompleteData: null,
     location: '',
     icon: 'search',
     filters: {
@@ -42,6 +44,7 @@ class SearchMenu extends Component {
     isFiltersModalVisible: false,
     isDateTimePickerVisible: false,
     isPlaceModalVisible: false,
+    isAutocompleteVisible: false,
   };
 
   componentDidMount = () => {
@@ -62,10 +65,14 @@ class SearchMenu extends Component {
 
   onSearch = (text) => {
     this.setState({text});
+    this.setAutocompleteVisible(false);
     this.fetchData();
   };
 
-  onChangeSearch = (text) => this.setState({text});
+  onChangeSearch = (text) => {
+    this.setState({text});
+    this.getAutocompleteData();
+  };
 
   onEndEditing = () => {
     const {text} = this.state;
@@ -74,6 +81,7 @@ class SearchMenu extends Component {
     } else {
       this.setState({icon: 'search'});
     }
+    this.setAutocompleteVisible(false);
   };
 
   onFocus = () => {
@@ -81,6 +89,7 @@ class SearchMenu extends Component {
     if(text != ''){
       this.setState({icon: 'close'});
     }
+    this.getAutocompleteData();
   };
 
   iconPress = () => {
@@ -93,6 +102,7 @@ class SearchMenu extends Component {
     } else {
       return false;
     }
+    this.setAutocompleteVisible(false);
   };
 
   setPriceModalVisible = (visible) => this.setState({isPriceModalVisible: visible});
@@ -103,6 +113,7 @@ class SearchMenu extends Component {
   };
 
   setFiltersModalVisible = (visible) => this.setState({isFiltersModalVisible: visible});
+  setAutocompleteVisible = (visible) => this.setState({isAutocompleteVisible: visible});
   
   setPriceFilter = (price) => {
     let filters = {...this.state.filters};
@@ -162,8 +173,9 @@ class SearchMenu extends Component {
   setPlaceModalVisible = (visible) => this.setState({ isPlaceModalVisible: visible });
 
   setLocation = (location) => {
-    this.setState({location});
-    this.fetchData();
+    this.setState({location}, function () {
+      this.fetchData();
+    });
   };
 
   handlePosition = () => {
@@ -184,6 +196,37 @@ class SearchMenu extends Component {
     );
   };
 
+  getAutocompleteData = () => {
+    const consumerKey = "aHkQvkO2mknb811VggwSodBjwyIVF65zfFq463PF9sxC088KEo8DfIkAGth0Pvwt4SnsBS7wMvnB16hJxB0b4m-c1qs5A36awFVek6CBG6c6Mz9tzKsGMDRFvh6aXHYx";
+    const {latitude, longitude} = this.state.position;
+    const {text, location} = this.state;
+
+    let params = `text=${text}&`;
+
+    if(location) {
+      params += `location=${location}`;
+    } else if(latitude != null && longitude != null) {
+      params += `latitude=${latitude}&longitude=${longitude}`;
+    }
+
+    fetch(`https://api.yelp.com/v3/autocomplete?${params}`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Authorization': `Bearer ${consumerKey}`,
+        'Content-Type': 'application/json',
+      },
+    }).then((res) => {
+      return res.json();
+    }).then((obj) => {
+      this.setAutocompleteData(obj.terms);
+    }).then(() => {
+      this.setAutocompleteVisible(true);
+    });
+  };
+
+  setAutocompleteData = (autocompleteData) => this.setState({autocompleteData});
+
   fetchData = () => {
     const consumerKey = "aHkQvkO2mknb811VggwSodBjwyIVF65zfFq463PF9sxC088KEo8DfIkAGth0Pvwt4SnsBS7wMvnB16hJxB0b4m-c1qs5A36awFVek6CBG6c6Mz9tzKsGMDRFvh6aXHYx";
     const {latitude, longitude} = this.state.position;
@@ -193,15 +236,16 @@ class SearchMenu extends Component {
 
     setFetching(true);
 
-    console.log(`ren fetch, long: ${longitude}`);
+    console.log(`ren fetch, long: ${location}`);
 
     let params = '';
 
-    if(latitude != null && longitude != null) {
-      params += `latitude=${latitude}&longitude=${longitude}`
-    } else if(location) {
-      params += `location=${location}`
+    if(location) {
+      params += `location=${location}`;
+    } else if(latitude != null && longitude != null) {
+      params += `latitude=${latitude}&longitude=${longitude}`;
     }
+    
     if(text!='') {
       params += `&term=${text}`
     }
@@ -219,7 +263,7 @@ class SearchMenu extends Component {
 
     console.log(`params ${params}`);
 
-    const resp = fetch(`https://api.yelp.com/v3/businesses/search?${params}`, {
+    fetch(`https://api.yelp.com/v3/businesses/search?${params}`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',
@@ -229,6 +273,8 @@ class SearchMenu extends Component {
     }).then((res) => {
       return res.json();
     }).then((obj) => {
+      console.log('Parsed: ');
+      console.log(obj);
       this.props.setBusinesses(obj.businesses);
     }).then( (obj)=>{
       setFetching(false);
@@ -236,7 +282,7 @@ class SearchMenu extends Component {
   };
  
   render() {
-    const {searchParams, backgroundColor} = this.props;
+    const {searchParams, primaryColor} = this.props;
     const {
       text,
       icon,
@@ -245,7 +291,9 @@ class SearchMenu extends Component {
       isPriceModalVisible,
       isDateTimePickerVisible,
       isPlaceModalVisible,
-      location
+      location,
+      autocompleteData,
+      isAutocompleteVisible,
     } = this.state;
     
     return (
@@ -259,7 +307,10 @@ class SearchMenu extends Component {
           onFocus={this.onFocus}
           icon={icon}
           iconPress={this.iconPress}
+          autocompleteData={autocompleteData}
+          isAutocompleteVisible={isAutocompleteVisible}
         />
+
         <View style={styles.container}>
           <FilterButton text={'Location'} icon={'compass'} onPress={() => this.setPlaceModalVisible(true)} />
           <Icon name="map" size={30} color='white' />
@@ -278,7 +329,7 @@ class SearchMenu extends Component {
           setSortBy={this.setSortBy}
           filters={filters}
           setTimeNow={this.setTimeNow}
-          backgroundColor={backgroundColor}
+          backgroundColor={primaryColor}
           openDateTimePicker={this.setDateTimePickerVisible}
         />
 
@@ -287,7 +338,7 @@ class SearchMenu extends Component {
           isVisible={isPriceModalVisible}
           setPrice={this.setPrice}
           current={filters.orderBy.price}
-          backgroundColor={backgroundColor}
+          backgroundColor={primaryColor}
         />
 
         <PlaceModal
@@ -295,7 +346,7 @@ class SearchMenu extends Component {
           isVisible={isPlaceModalVisible}
           city={location}
           onSubmitEditing={this.setLocation}
-          backgroundColor={backgroundColor}
+          backgroundColor={primaryColor}
           setPosition={this.handlePosition}
         />
 
@@ -310,4 +361,12 @@ class SearchMenu extends Component {
   }
 }
 
-export default SearchMenu;
+
+
+const mapStateToProps = (state) => {
+  return {
+    primaryColor: state.theme.primaryColor,
+  };
+};
+
+export default connect(mapStateToProps)(connectAlert(SearchMenu));

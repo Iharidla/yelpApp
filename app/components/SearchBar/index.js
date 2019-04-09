@@ -1,4 +1,5 @@
-import SearchBar from './SearchBar';;
+import SearchBar from './SearchBar';
+import Autocomplete from './Autocomplete';
 import styles from './styles';
 
-export { SearchBar, styles };
+export { SearchBar, Autocomplete, styles };

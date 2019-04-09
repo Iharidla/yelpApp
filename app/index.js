@@ -1,10 +1,12 @@
-import React, { Component } from 'react';
+import React  from 'react';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { Provider } from 'react-redux';
 
 import AppContainer from './config/routes';
 import { AlertProvider } from './components/Alert';
-import store from './config/store';
+import configureStore from './config/store';
+
+const store = configureStore();
 
 EStyleSheet.build({
   $primaryBlue: '#4F6D7A',

@@ -23,6 +23,15 @@ const styles = EStyleSheet.create({
     fontSize: 15,
     color: '#999',
   },
+  container: {
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  autocomplete: {
+    backgroundColor: 'white',
+    width: width,
+    padding: 10,
+  }
 });
 
 export default styles;

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { View, ActivityIndicator, FlatList } from 'react-native';
 import { connect } from "react-redux";
+
 import {Business} from "../components/Businesses";
 import {Separator} from "../components/List";
 import {SearchMenu} from "../components/SearchMenu";
@@ -29,7 +30,9 @@ class Businesses extends Component {
   render() {
     const { navigation, primaryColor } = this.props;
     const searchParams = navigation.getParam('searchParams', {});
-    const { isFetching } = this.state;
+    const { isFetching, businesses } = this.state;
+    
+    console.log(businesses);
     return (
       <Container backgroundColor={primaryColor}>
         <SearchMenu
@@ -45,7 +48,7 @@ class Businesses extends Component {
             <ActivityIndicator size="large" color={this.props.primaryColor} />
             :
             <FlatList
-              data={this.state.businesses}
+              data={businesses}
               renderItem={({ item }) => (
                 <Business
                   name={item.name}
@@ -71,7 +74,6 @@ class Businesses extends Component {
 const mapStateToProps = (state) => {
   return {
     primaryColor: state.theme.primaryColor,
-    currencyError: state.currencies.error,
   };
 };
 

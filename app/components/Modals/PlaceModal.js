@@ -13,6 +13,7 @@ class PlaceModal extends Component {
     setPlaceModalVisible: PropTypes.func,
     isVisible: PropTypes.bool,
     setPosition: PropTypes.func,
+    onSubmitEditing: PropTypes.func,
     city: PropTypes.string,
     backgroundColor: PropTypes.string,
   };
@@ -26,9 +27,10 @@ class PlaceModal extends Component {
   };
 
   onSubmitEditing = (text) => {
+    console.log('pressed');
     const {setPlaceModalVisible, onSubmitEditing} = this.props;
-    this.setState({text: ''});
     setPlaceModalVisible(false);
+    this.setState({text: ''});
     onSubmitEditing(text);
   };
 

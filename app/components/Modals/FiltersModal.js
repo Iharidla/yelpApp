@@ -7,9 +7,8 @@ import Icon from 'react-native-ionicons';
 import { FilterList } from "../FilterList";
 
 import styles from "./styles";
-
-const priceTitles=[{value: 1, text: '$'}, {value: 2, text: '$$'}, {value: 3, text: '$$$'}, {value: 4, text: '$$$$'}];
-const sortTitles=[{value: 'best_match', text: 'Best Match'}, {value: 'rating', text: 'Rating'}, {value: 'distance', text: 'Distance'}];
+import prices from "../../data/prices";
+import sortTitles from "../../data/sortTitles";
 
 const FiltersModal = ({setModalVisible, isVisible, setPrice, setTimeNow, setSortBy, filters, backgroundColor, openDateTimePicker}) => (
   <Modal
@@ -33,7 +32,7 @@ const FiltersModal = ({setModalVisible, isVisible, setPrice, setTimeNow, setSort
             <Icon name='options' size={20} color='white'/>
             <Text style={styles.filterText}>Filter by</Text>
           </View>
-          <FilterList data={priceTitles} onPress={setPrice} current={filters.orderBy.price}/>
+          <FilterList data={prices} onPress={setPrice} current={filters.orderBy.price}/>
           <View style={styles.filterListBackground}>
             <View style={styles.filterListContainer}>
              <TouchableHighlight
