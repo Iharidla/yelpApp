@@ -39,7 +39,7 @@ class Options extends Component {
         />
         <Separator />
         <ListItem
-          text="Fixer.io"
+          text="Yelp.com"
           onPress={this.handleSitePress}
           customIcon={
             <Icon name="link" color={ICON_COLOR} size={ICON_SIZE} />

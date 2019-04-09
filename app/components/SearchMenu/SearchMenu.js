@@ -27,6 +27,7 @@ class SearchMenu extends Component {
       latitude: null,
       longitude: null,
     },
+    autocompleteData: null,
     location: '',
     icon: 'search',
     filters: {
@@ -43,6 +44,7 @@ class SearchMenu extends Component {
     isFiltersModalVisible: false,
     isDateTimePickerVisible: false,
     isPlaceModalVisible: false,
+    isAutocompleteVisible: false,
   };
 
   componentDidMount = () => {
@@ -63,10 +65,14 @@ class SearchMenu extends Component {
 
   onSearch = (text) => {
     this.setState({text});
+    this.setAutocompleteVisible(false);
     this.fetchData();
   };
 
-  onChangeSearch = (text) => this.setState({text});
+  onChangeSearch = (text) => {
+    this.setState({text});
+    this.getAutocompleteData();
+  };
 
   onEndEditing = () => {
     const {text} = this.state;
@@ -75,6 +81,7 @@ class SearchMenu extends Component {
     } else {
       this.setState({icon: 'search'});
     }
+    this.setAutocompleteVisible(false);
   };
 
   onFocus = () => {
@@ -82,6 +89,7 @@ class SearchMenu extends Component {
     if(text != ''){
       this.setState({icon: 'close'});
     }
+    this.getAutocompleteData();
   };
 
   iconPress = () => {
@@ -94,6 +102,7 @@ class SearchMenu extends Component {
     } else {
       return false;
     }
+    this.setAutocompleteVisible(false);
   };
 
   setPriceModalVisible = (visible) => this.setState({isPriceModalVisible: visible});
@@ -104,6 +113,7 @@ class SearchMenu extends Component {
   };
 
   setFiltersModalVisible = (visible) => this.setState({isFiltersModalVisible: visible});
+  setAutocompleteVisible = (visible) => this.setState({isAutocompleteVisible: visible});
   
   setPriceFilter = (price) => {
     let filters = {...this.state.filters};
@@ -163,9 +173,9 @@ class SearchMenu extends Component {
   setPlaceModalVisible = (visible) => this.setState({ isPlaceModalVisible: visible });
 
   setLocation = (location) => {
-    console.log(`location: ${location}`);
-    this.setState({location});
-    this.fetchData();
+    this.setState({location}, function () {
+      this.fetchData();
+    });
   };
 
   handlePosition = () => {
@@ -186,6 +196,37 @@ class SearchMenu extends Component {
     );
   };
 
+  getAutocompleteData = () => {
+    const consumerKey = "aHkQvkO2mknb811VggwSodBjwyIVF65zfFq463PF9sxC088KEo8DfIkAGth0Pvwt4SnsBS7wMvnB16hJxB0b4m-c1qs5A36awFVek6CBG6c6Mz9tzKsGMDRFvh6aXHYx";
+    const {latitude, longitude} = this.state.position;
+    const {text, location} = this.state;
+
+    let params = `text=${text}&`;
+
+    if(location) {
+      params += `location=${location}`;
+    } else if(latitude != null && longitude != null) {
+      params += `latitude=${latitude}&longitude=${longitude}`;
+    }
+
+    fetch(`https://api.yelp.com/v3/autocomplete?${params}`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Authorization': `Bearer ${consumerKey}`,
+        'Content-Type': 'application/json',
+      },
+    }).then((res) => {
+      return res.json();
+    }).then((obj) => {
+      this.setAutocompleteData(obj.terms);
+    }).then(() => {
+      this.setAutocompleteVisible(true);
+    });
+  };
+
+  setAutocompleteData = (autocompleteData) => this.setState({autocompleteData});
+
   fetchData = () => {
     const consumerKey = "aHkQvkO2mknb811VggwSodBjwyIVF65zfFq463PF9sxC088KEo8DfIkAGth0Pvwt4SnsBS7wMvnB16hJxB0b4m-c1qs5A36awFVek6CBG6c6Mz9tzKsGMDRFvh6aXHYx";
     const {latitude, longitude} = this.state.position;
@@ -198,8 +239,6 @@ class SearchMenu extends Component {
     console.log(`ren fetch, long: ${location}`);
 
     let params = '';
-    
-    
 
     if(location) {
       params += `location=${location}`;
@@ -224,7 +263,7 @@ class SearchMenu extends Component {
 
     console.log(`params ${params}`);
 
-    const resp = fetch(`https://api.yelp.com/v3/businesses/search?${params}`, {
+    fetch(`https://api.yelp.com/v3/businesses/search?${params}`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',
@@ -252,7 +291,9 @@ class SearchMenu extends Component {
       isPriceModalVisible,
       isDateTimePickerVisible,
       isPlaceModalVisible,
-      location
+      location,
+      autocompleteData,
+      isAutocompleteVisible,
     } = this.state;
     
     return (
@@ -266,7 +307,10 @@ class SearchMenu extends Component {
           onFocus={this.onFocus}
           icon={icon}
           iconPress={this.iconPress}
+          autocompleteData={autocompleteData}
+          isAutocompleteVisible={isAutocompleteVisible}
         />
+
         <View style={styles.container}>
           <FilterButton text={'Location'} icon={'compass'} onPress={() => this.setPlaceModalVisible(true)} />
           <Icon name="map" size={30} color='white' />
@@ -316,6 +360,8 @@ class SearchMenu extends Component {
     );
   }
 }
+
+
 
 const mapStateToProps = (state) => {
   return {

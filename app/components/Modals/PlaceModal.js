@@ -30,8 +30,8 @@ class PlaceModal extends Component {
     console.log('pressed');
     const {setPlaceModalVisible, onSubmitEditing} = this.props;
     setPlaceModalVisible(false);
-    onSubmitEditing(text);
     this.setState({text: ''});
+    onSubmitEditing(text);
   };
 
   setPosition = () => {
