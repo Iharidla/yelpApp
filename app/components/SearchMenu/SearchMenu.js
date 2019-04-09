@@ -186,8 +186,6 @@ class SearchMenu extends Component {
   setPosition = () => {
     let {position} = this.state;
     navigator.geolocation.getCurrentPosition((geolocation) => {
-        console.log(`coord:`);
-        console.log(geolocation);
         position = geolocation.coords;
         this.setState({position});
       },
@@ -236,8 +234,6 @@ class SearchMenu extends Component {
 
     setFetching(true);
 
-    console.log(`ren fetch, long: ${location}`);
-
     let params = '';
 
     if(location) {
@@ -261,8 +257,6 @@ class SearchMenu extends Component {
       params += `&open_now=true`
     }
 
-    console.log(`params ${params}`);
-
     fetch(`https://api.yelp.com/v3/businesses/search?${params}`, {
       method: 'GET',
       headers: {
@@ -273,8 +267,6 @@ class SearchMenu extends Component {
     }).then((res) => {
       return res.json();
     }).then((obj) => {
-      console.log('Parsed: ');
-      console.log(obj);
       this.props.setBusinesses(obj.businesses);
     }).then( (obj)=>{
       setFetching(false);

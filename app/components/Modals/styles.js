@@ -14,6 +14,7 @@ const styles = EStyleSheet.create({
     paddingRight: 10,
     paddingBottom: 0,
     paddingTop: 0,
+    fontSize: 15,
   },
   roundContainer: {
     alignItems: 'center',
@@ -53,10 +54,14 @@ const styles = EStyleSheet.create({
     borderWidth: 2,
   },
   placeContainer: {
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+    marginBottom: 10,
+  },
+  searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 10
   },
   placeIcon: {
     marginRight: 10,

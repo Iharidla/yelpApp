@@ -29,8 +29,8 @@ const styles = EStyleSheet.create({
   },
   autocomplete: {
     backgroundColor: 'white',
-    width: width,
     padding: 10,
+    borderRadius: 10,
   }
 });
 

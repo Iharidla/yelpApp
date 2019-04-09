@@ -31,8 +31,7 @@ class Businesses extends Component {
     const { navigation, primaryColor } = this.props;
     const searchParams = navigation.getParam('searchParams', {});
     const { isFetching, businesses } = this.state;
-    
-    console.log(businesses);
+
     return (
       <Container backgroundColor={primaryColor}>
         <SearchMenu

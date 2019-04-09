@@ -4,8 +4,8 @@ import {Text, TouchableHighlight, View} from "react-native";
 
 import styles from "./styles";
 
-const Autocomplete = ({data, onPress}) => (
-    <View style={styles.autocomplete}>
+const Autocomplete = ({data, onPress, width}) => (
+    <View style={[styles.autocomplete, {width: width}]}>
       {
         data.map((item) => (
           <TouchableHighlight
@@ -23,6 +23,7 @@ const Autocomplete = ({data, onPress}) => (
 Autocomplete.propTypes = {
   data: PropTypes.array,
   onPress: PropTypes.func,
+  width: PropTypes.number,
 };
 
 export default Autocomplete;

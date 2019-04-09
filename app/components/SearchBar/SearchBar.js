@@ -46,6 +46,7 @@ const SearchBar = ({
       <Autocomplete
         data={autocompleteData}
         onPress={onSubmitEditing}
+        width={styles.searchInput.width}
       /> : null}
   </View>
 );

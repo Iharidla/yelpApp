@@ -17,6 +17,8 @@
     "oauthsimple": "0.0.1",
     "react": "16.6.3",
     "react-native": "^0.58.5",
+    "react-native-autocomplete-input": "^3.6.0",
+    "react-native-autocomplete-search": "^1.0.8",
     "react-native-dropdownalert": "^3.9.2",
     "react-native-easy-grid": "^0.2.1",
     "react-native-elements": "^1.1.0",
